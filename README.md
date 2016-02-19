@@ -1,5 +1,9 @@
-bgs
-===
+ruby-bgs
+========
+
+`bgs` is a gem that helps developers within the VA connect to a set of
+VA internal webservices, the `BGS` (Benefits Gateway Services).
+
 
 Example Usage
 -------------
@@ -7,14 +11,14 @@ Example Usage
 ```ruby
 require 'bgs'
 
-s = BGS::PersonWebService.new(
+people = BGS::PersonWebService.new(
     env: "something",
     client_ip: "127.0.0.1",
     client_station_id: "999999",
     client_username: "paultag",
     application: "APPNAME",
 )
-puts s.find_by_ssn "9999999999"
+puts people.find_by_ssn "9999999999"
 ```
 
 License
