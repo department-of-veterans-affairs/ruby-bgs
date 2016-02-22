@@ -28,11 +28,19 @@ module BGS
       @client_station_id = client_station_id
       @client_username = client_username
       @log = log
+      @env = env
       @service_name = self.class.name.split('::').last
-      @wsdl = "http://#{env}.vba.va.gov/#{@service_name}Bean/#{@service_name}?WSDL"
     end
   
     private
+
+    def wsdl
+      return "http://#{@env}.vba.va.gov/#{bean_name}/#{@service_name}?WSDL"
+    end
+
+    def bean_name
+      return "#{@service_name}Bean"
+    end
 
     # Return the VA SOAP audit header. Given the instance variables sitting
     # off the instance, we will go ahead and construct the SOAP Header that
@@ -72,7 +80,7 @@ module BGS
     # logging can be enabled by passing `log: true` to the constructor
     # of any of the services.
     def client
-      @client ||= Savon.client(wsdl: @wsdl, soap_header: header, log: @log)
+      @client ||= Savon.client(wsdl: wsdl, soap_header: header, log: @log)
     end
   
     # Proxy to call a method on our web service.

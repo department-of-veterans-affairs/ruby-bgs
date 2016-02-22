@@ -15,3 +15,5 @@
 # in to the implementation(s) (really: declarations)
 
 require 'bgs/services/person'
+require 'bgs/services/org'
+require 'bgs/services/claimant'
