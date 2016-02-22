@@ -18,7 +18,7 @@ bgs = BGS::Services.new(
     client_username: "paultag",
     application: "APPNAME",
 )
-puts bgs.person_service.find_by_ssn "9999999999"
+puts bgs.people.find_by_ssn "9999999999"
 ```
 
 License
