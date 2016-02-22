@@ -16,3 +16,29 @@
 require "bgs/services/person"
 require "bgs/services/org"
 require "bgs/services/claimant"
+
+# Now, we're going to declare a class to hide the actual creation of service
+# objects, since having to construct them all really sucks.
+
+module BGS
+  class Services
+    def initialize(env:, application:,
+                   client_ip:, client_station_id:, client_username:,
+                   log: false)
+
+      @config = { env: env, application: application, client_ip: client_ip,
+                  client_station_id: client_station_id,
+                  client_username: client_username, log: log }
+    end
+
+    def self.all
+      ObjectSpace.each_object(Class).select { |klass| klass < BGS::Base }
+    end
+
+    BGS::Services.all.each do |service|
+      define_method("#{service.service_name}_service") do
+        service.new @config
+      end
+    end
+  end
+end

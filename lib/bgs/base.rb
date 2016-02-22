@@ -29,6 +29,12 @@ module BGS
       @service_name = self.class.name.split("::").last
     end
 
+    def self.service_name
+      name = self.name.split("::").last.downcase
+      name = name[0..-11] if name.end_with? "webservice"
+      name
+    end
+
     private
 
     def wsdl
