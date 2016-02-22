@@ -17,7 +17,7 @@ module BGS
     # finds the VSO organization details by Participant ID.
     def find_by_participant_id(participant_id)
       response = request(:find_org_by_ptcpnt_id, "ptcpntId": participant_id)
-      response.body
+      response.body[:find_org_by_ptcpnt_id_response][:return]
     end
   end
 end
