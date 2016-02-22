@@ -1,22 +1,19 @@
 # As a work of the United States Government, this project is in the
 # public domain within the United States.
-# 
+#
 # Additionally, we waive copyright and related rights in the work
 # worldwide through the CC0 1.0 Universal public domain dedication.
 
-require 'savon'
-require 'nokogiri'
-
+require "savon"
+require "nokogiri"
 
 module BGS
-
   # This class is a base-class from which most Web Services will inheret.
   # This contains the basics of how to talk with the BGS SOAP API, in
   # particular, the VA's custom SOAP headers for auditing. As a bonus, it's
   # also aware of the BGS's URL patterns, making it easy to define new
   # web services as needed using some light reflection.
   class Base
-
     # Base-class constructor. This sets up some instance instance variables
     # for use later -- such as the client's IP, and who we are. This also
     # takes an additional argument - `log`, which will enable `savon` logging.
@@ -29,17 +26,17 @@ module BGS
       @client_username = client_username
       @log = log
       @env = env
-      @service_name = self.class.name.split('::').last
+      @service_name = self.class.name.split("::").last
     end
-  
+
     private
 
     def wsdl
-      return "http://#{@env}.vba.va.gov/#{bean_name}/#{@service_name}?WSDL"
+      "http://#{@env}.vba.va.gov/#{bean_name}/#{@service_name}?WSDL"
     end
 
     def bean_name
-      return "#{@service_name}Bean"
+      "#{@service_name}Bean"
     end
 
     # Return the VA SOAP audit header. Given the instance variables sitting
@@ -64,28 +61,24 @@ module BGS
   </wsse:Security>
   EOXML
       # }}}
-  
-      {
-          Username: @client_username,
-          CLIENT_MACHINE: @client_ip,
-          STN_ID: @client_station_id,
-          applicationName: @application
-      }.each do |k,v|
-          header.xpath(".//*[local-name()='#{k}']")[0].content = v
+
+      { Username: @client_username, CLIENT_MACHINE: @client_ip,
+        STN_ID: @client_station_id, applicationName: @application }.each do |k, v|
+        header.xpath(".//*[local-name()='#{k}']")[0].content = v
       end
       header
     end
-  
+
     # Return a `savon` client all configured like we like it. Optionally,
     # logging can be enabled by passing `log: true` to the constructor
     # of any of the services.
     def client
       @client ||= Savon.client(wsdl: wsdl, soap_header: header, log: @log)
     end
-  
+
     # Proxy to call a method on our web service.
     def request(method, message)
-      client.call(method, :message => message)
+      client.call(method, message: message)
     end
   end
 end
