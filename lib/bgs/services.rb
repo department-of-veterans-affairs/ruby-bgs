@@ -36,7 +36,7 @@ module BGS
     end
 
     BGS::Services.all.each do |service|
-      define_method("#{service.service_name}_service") do
+      define_method(service.service_name) do
         service.new @config
       end
     end

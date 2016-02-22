@@ -32,7 +32,7 @@ module BGS
     def self.service_name
       name = self.name.split("::").last.downcase
       name = name[0..-11] if name.end_with? "webservice"
-      name
+      name + "s"
     end
 
     private
