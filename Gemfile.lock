@@ -34,6 +34,7 @@ GEM
     powerpack (0.1.1)
     rack (1.6.4)
     rainbow (2.1.0)
+    rake (10.5.0)
     rubocop (0.36.0)
       parser (>= 2.3.0.0, < 3.0)
       powerpack (~> 0.1)
@@ -59,6 +60,7 @@ PLATFORMS
 DEPENDENCIES
   bgs!
   bundler-audit!
+  rake
   rubocop (~> 0.36.0)
 
 BUNDLED WITH
