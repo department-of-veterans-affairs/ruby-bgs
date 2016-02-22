@@ -1,0 +1,14 @@
+language: ruby
+cache: bundler
+
+matrix:
+  include:
+    - rvm: 2.1.0
+      before_install: gem install bundler --no-ri --no-rdoc
+    - rvm: 2.1.0
+      before_install: gem install bundler --no-ri --no-rdoc
+    - rvm: 2.2.3
+      before_install: gem install bundler --no-ri --no-rdoc
+    - rvm: 2.2.2
+
+  fast_finish: true
