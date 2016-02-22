@@ -11,14 +11,14 @@ Example Usage
 ```ruby
 require 'bgs'
 
-people = BGS::PersonWebService.new(
+bgs = BGS::Services.new(
     env: "something",
     client_ip: "127.0.0.1",
     client_station_id: "999999",
     client_username: "paultag",
     application: "APPNAME",
 )
-puts people.find_by_ssn "9999999999"
+puts bgs.person_service.find_by_ssn "9999999999"
 ```
 
 License
