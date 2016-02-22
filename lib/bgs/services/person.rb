@@ -9,6 +9,11 @@ module BGS
   # interested in. This information may be kept permanently, removed or discarded
   # if appropriate.
   class PersonWebService < BGS::Base
+    # Plural of 'Person' is 'People' not 'Persons'
+    def service_name
+      "people"
+    end
+
     # Find a Person, as defined by the Person Web Service, by their SSN.
     def find_by_ssn(ssn)
       response = request(:find_person_by_ssn, "ssn": ssn)
