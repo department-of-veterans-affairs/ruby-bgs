@@ -8,16 +8,14 @@ module BGS
   # This service is used to store information about individuals the VA is
   # interested in. This information may be kept permanently, removed or discarded
   # if appropriate.
-  class PersonWebService < BGS::Base
-    # Plural of 'Person' is 'People' not 'Persons'
-    def self.service_name
-      "people"
+  class AwardWebService < BGS::Base
+    def bean_name
+      "AwardWebServiceBean"
     end
 
-    # Find a Person, as defined by the Person Web Service, by their SSN.
-    def find_by_ssn(ssn)
-      response = request(:find_person_by_ssn, "ssn": ssn)
-      response.body[:find_person_by_ssn_response][:person_dto]
+    def find_by_participant_id(participant_id)
+      response = request(:find_award_bene_by_ptcpnt_vet_id, "ptcpntVetId": participant_id)
+      response.body[:findAwardBeneByPtcpntVetIdResponse]
     end
   end
 end
