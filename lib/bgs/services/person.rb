@@ -10,7 +10,7 @@ module BGS
   # if appropriate.
   class PersonWebService < BGS::Base
     # Plural of 'Person' is 'People' not 'Persons'
-    def service_name
+    def self.service_name
       "people"
     end
 
