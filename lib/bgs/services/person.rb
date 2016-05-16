@@ -19,5 +19,12 @@ module BGS
       response = request(:find_person_by_ssn, "ssn": ssn)
       response.body[:find_person_by_ssn_response][:person_dto]
     end
+
+    # Find a Person, as defined by the Person Web Service, by their File
+    # Number.
+    def find_by_file_number(file_number)
+      response = request(:find_person_by_file_number, "fileNumber": file_number)
+      response.body[:find_person_by_file_number_response][:person_dto]
+    end
   end
 end
