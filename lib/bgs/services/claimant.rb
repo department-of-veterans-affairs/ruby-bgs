@@ -11,6 +11,19 @@ module BGS
       "ClaimantServiceBean"
     end
 
+    # uses the findFlashes as a proxy to check that the user can
+    # access the specified FileNumber, a SOAPFault is returned if
+    # the user cannot be accessed.
+    def get_sensitivity_access(file_number)
+      begin
+        request(:find_flashes, "fileNumber": file_number)
+      rescue Savon::SOAPFault
+        return false
+      end
+
+      return true
+    end
+
     # findPOAByPtcntId (shrinqf)
     #   finds the Power of Attorney related to a participant ID.
     def find_poa_by_participant_id(id)
