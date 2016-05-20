@@ -21,7 +21,7 @@ module BGS
         return false
       end
 
-      return true
+      true
     end
 
     # findPOAByPtcntId (shrinqf)
