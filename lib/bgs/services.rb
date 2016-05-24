@@ -41,5 +41,23 @@ module BGS
         service.new @config
       end
     end
+
+    # High level utility function to determine if a record can be accessed
+    # in the current configuration. The logic on reading flashes this way
+    # was grafted from how VBMS checks to see if the sensitivity level is
+    # appropriate.
+    #
+    # If you need flashes later, it's likely better to find_flashes directly,
+    # and catch a BGS::ShareError if it's not allowed.
+    #
+    # This also requires the claimants service to have been implicitly loaded
+    # above; which can break if the require at the top is removed, or if the
+    # name changes.
+    def can_access?(ssn)
+      claimants.find_flashes(ssn).nil?
+      return true
+    rescue BGS::ShareError
+      return false
+    end
   end
 end
