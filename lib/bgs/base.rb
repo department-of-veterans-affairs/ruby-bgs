@@ -8,6 +8,17 @@ require "savon"
 require "nokogiri"
 
 module BGS
+  # This error is raised when the BGS SOAP API returns a ShareException
+  # fault back to us. We special-case the handling to raise this custom
+  # type down in `request`, where we will kick this up if we're accessing
+  # something that's above our sensitivity level.
+  class ShareError < StandardError
+    def initialize(message)
+      @message = message
+      super
+    end
+  end
+
   # This class is a base-class from which most Web Services will inheret.
   # This contains the basics of how to talk with the BGS SOAP API, in
   # particular, the VA's custom SOAP headers for auditing. As a bonus, it's
@@ -85,6 +96,10 @@ module BGS
     # Proxy to call a method on our web service.
     def request(method, message)
       client.call(method, message: message)
+    rescue Savon::SOAPFault => error
+      exception_detail = error.to_hash[:fault][:detail]
+      raise e unless exception_detail.key? :share_exception
+      raise BGS::ShareError, exception_detail[:share_exception][:message]
     end
   end
 end
