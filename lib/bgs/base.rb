@@ -19,6 +19,7 @@ module BGS
     # takes an additional argument - `log`, which will enable `savon` logging.
     def initialize(env:, application:,
                    client_ip:, client_station_id:, client_username:,
+                   ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil)
                    log: false)
       @application = application
       @client_ip = client_ip
@@ -26,6 +27,9 @@ module BGS
       @client_username = client_username
       @log = log
       @env = env
+      @ssl_cert_file = ssl_cert_file
+      @ssl_cert_key_file = ssl_cert_key_file
+      @ssl_ca_cert = ssl_ca_cert
       @service_name = self.class.name.split("::").last
     end
 
@@ -79,7 +83,12 @@ module BGS
     # logging can be enabled by passing `log: true` to the constructor
     # of any of the services.
     def client
-      @client ||= Savon.client(wsdl: wsdl, soap_header: header, log: @log)
+      @client ||= Savon.client(
+        wsdl: wsdl, soap_header: header, log: @log,
+        ssl_cert_key_file: @ssl_cert_key_file,
+        ssl_cert_file: @ssl_cert_file,
+        ssl_ca_cert_file: @ssl_ca_cert
+      )
     end
 
     # Proxy to call a method on our web service.
