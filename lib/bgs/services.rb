@@ -25,7 +25,7 @@ module BGS
   class Services
     def initialize(env:, application:,
                    client_ip:, client_station_id:, client_username:,
-                   ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil
+                   ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil,
                    log: false)
 
       @config = { env: env, application: application, client_ip: client_ip,
@@ -33,7 +33,7 @@ module BGS
                   client_username: client_username,
                   ssl_cert_file: ssl_cert_file,
                   ssl_cert_key_file: ssl_cert_key_file,
-                  ssl_ca_cert: ssl_ca_cert)
+                  ssl_ca_cert: ssl_ca_cert,
                   log: log }
     end
 

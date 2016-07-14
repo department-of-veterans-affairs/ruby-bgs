@@ -30,7 +30,7 @@ module BGS
     # takes an additional argument - `log`, which will enable `savon` logging.
     def initialize(env:, application:,
                    client_ip:, client_station_id:, client_username:,
-                   ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil)
+                   ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil,
                    log: false)
       @application = application
       @client_ip = client_ip
