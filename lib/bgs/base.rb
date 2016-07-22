@@ -52,8 +52,12 @@ module BGS
 
     private
 
+    def https?
+      @ssl_cert_file && @ssl_cert_key_file
+    end
+
     def wsdl
-      "http://#{@env}.vba.va.gov/#{bean_name}/#{@service_name}?WSDL"
+      "#{https? ? "https" : "http"}://#{@env}.vba.va.gov/#{bean_name}/#{@service_name}?WSDL"
     end
 
     def bean_name
