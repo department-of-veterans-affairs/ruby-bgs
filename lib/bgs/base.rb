@@ -57,7 +57,7 @@ module BGS
     end
 
     def wsdl
-      "#{https? ? "https" : "http"}://#{@env}.vba.va.gov/#{bean_name}/#{@service_name}?WSDL"
+      "#{https? ? 'https' : 'http'}://#{@env}.vba.va.gov/#{bean_name}/#{@service_name}?WSDL"
     end
 
     def bean_name
