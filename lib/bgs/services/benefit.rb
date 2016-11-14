@@ -13,5 +13,11 @@ module BGS
 
       response.body[:find_benefit_claim_response][:return][:participant_record][:selection] || []
     end
+
+    def find_claim_detail_by_id(id)
+      response = request(:find_benefit_claim_detail, "benefitClaimId": id)
+
+      response.body[:find_benefit_claim_detail_response][:return] || []
+    end
   end
 end
