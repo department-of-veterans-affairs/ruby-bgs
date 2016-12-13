@@ -23,4 +23,3 @@ module BGS
     end
   end
 end
-
