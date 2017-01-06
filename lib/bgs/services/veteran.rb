@@ -15,8 +15,8 @@ module BGS
       "veteran"
     end
 
-    def find_by_file_number(ssn)
-      response = request(:find_veteran_by_file_number, "fileNumber": ssn)
+    def find_by_file_number(file_number)
+      response = request(:find_veteran_by_file_number, "fileNumber": file_number)
       response = response.body[:find_veteran_by_file_number_response][:return]
 
       response[:vet_corp_record].merge(sex: response[:vet_birls_record][:sex_code])
