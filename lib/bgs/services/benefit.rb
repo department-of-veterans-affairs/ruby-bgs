@@ -19,5 +19,32 @@ module BGS
 
       response.body[:find_benefit_claim_detail_response][:return] || []
     end
+
+    # We have no idea what reason 1 is, these are only being used in UAT for testing purposes
+    def clear_end_product(file_number:, end_product_code:, modifier:, reason: "1")
+      response = request(:clear_benefit_claim, "clearBenefitClaimInput": {
+                           "fileNumber": file_number,
+                           "payeeCode": "00",
+                           "benefitClaimType": "1",
+                           "endProductCode": end_product_code,
+                           "incremental": modifier,
+                           "pclrReasonCode": reason
+                         })
+
+      response.body || []
+    end
+
+    def cancel_end_product(file_number:, end_product_code:, modifier:, reason: "1")
+      response = request(:cancel_benefit_claim, "cancelBenefitClaimInput": {
+                           "fileNumber": file_number,
+                           "payeeCode": "00",
+                           "benefitClaimType": "1",
+                           "endProductCode": end_product_code,
+                           "incremental": modifier,
+                           "pcanReasonCode": reason
+                         })
+
+      response.body || []
+    end
   end
 end
