@@ -19,6 +19,7 @@ require "bgs/services/claimant"
 require "bgs/services/awards"
 require "bgs/services/benefit"
 require "bgs/services/veteran"
+require "bgs/services/note"
 
 # Now, we're going to declare a class to hide the actual creation of service
 # objects, since having to construct them all really sucks.
