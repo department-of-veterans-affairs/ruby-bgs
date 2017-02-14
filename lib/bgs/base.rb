@@ -102,7 +102,9 @@ module BGS
         wsdl: wsdl, soap_header: header, log: @log,
         ssl_cert_key_file: @ssl_cert_key_file,
         ssl_cert_file: @ssl_cert_file,
-        ssl_ca_cert_file: @ssl_ca_cert
+        ssl_ca_cert_file: @ssl_ca_cert,
+        open_timeout: 30, # in seconds
+        read_timeout: 30 # in seconds
       )
     end
 
