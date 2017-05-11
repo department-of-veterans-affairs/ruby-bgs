@@ -6,9 +6,7 @@
 
 module BGS
   # This service is used to find Standard Data from Share.
-
   class StandardDataWebService < BGS::Base
-
     def self.service_name
       "standard_data"
     end
