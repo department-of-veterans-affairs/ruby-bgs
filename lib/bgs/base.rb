@@ -109,7 +109,7 @@ module BGS
     end
 
     # Proxy to call a method on our web service.
-    def request(method, message)
+    def request(method, message = nil)
       client.call(method, message: message)
     rescue Savon::SOAPFault => error
       exception_detail = error.to_hash[:fault][:detail]
