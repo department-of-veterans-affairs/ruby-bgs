@@ -14,7 +14,6 @@ module BGS
   # findPOAsByBnftClaimIds - finds the POA details by Benefit Claim ID.
   #
   class OrgWebService < BGS::Base
-
     def self.service_name
       "org"
     end
