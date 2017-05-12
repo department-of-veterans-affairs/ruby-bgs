@@ -8,7 +8,7 @@ module BGS
   # This service is used to find Standard Data from Share.
   class StandardDataWebService < BGS::Base
     def self.service_name
-      "standard_data"
+      "data"
     end
 
     # This method is used to find all the Power of Attorney Data.
