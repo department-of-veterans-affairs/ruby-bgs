@@ -113,7 +113,7 @@ module BGS
       client.call(method, message: message)
     rescue Savon::SOAPFault => error
       exception_detail = error.to_hash[:fault][:detail]
-      raise e unless exception_detail.key? :share_exception
+      raise error unless exception_detail.key? :share_exception
       raise BGS::ShareError, exception_detail[:share_exception][:message]
     end
   end
