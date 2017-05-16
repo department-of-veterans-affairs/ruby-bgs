@@ -13,7 +13,9 @@ module BGS
 
     # Finds a PTCPNT_ADDRS row for the given ptcpnt_id and address type
     def find_by_participant_id(participant_id)
-      response = request(:find_ptcpnt_addrs, "ptcpntId": participant_id, "ptcpntAddrsTypeNm": "Mailing")
+      response = request(
+        :find_ptcpnt_addrs, "ptcpntId": participant_id, "ptcpntAddrsTypeNm": "Mailing"
+      )
       response.body[:find_ptcpnt_addrs_response][:return]
     end
   end
