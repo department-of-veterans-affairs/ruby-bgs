@@ -18,5 +18,14 @@ module BGS
       )
       response.body[:find_ptcpnt_addrs_response][:return]
     end
+
+    # Finds all the PTCPNT_ADDRS rows that do not have an end_date, for the provided
+    # ptcpnt_id
+    def find_all_by_participant_id(participant_id)
+      response = request(
+        :find_all_ptcpnt_addrs_by_ptcpnt_id, "ptcpntId": participant_id
+      )
+      response.body[:find_all_ptcpnt_addrs_by_ptcpnt_id_response][:return]
+    end
   end
 end
