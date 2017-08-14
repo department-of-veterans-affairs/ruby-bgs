@@ -19,9 +19,15 @@ module BGS
       response = request(:find_veteran_by_file_number, "fileNumber": file_number)
       response = response.body[:find_veteran_by_file_number_response][:return]
 
-      response[:vet_birls_record]
-        .merge(response[:vet_corp_record])
-        .merge(sex: response[:vet_birls_record][:sex_code])
+      birls_record = response[:vet_birls_record] || {}
+      corp_record = response[:vet_corp_record] || {}
+      backwards_compatibility = {
+        sex: birls_record[:sex_code]
+      }
+
+      birls_record
+        .merge(corp_record)
+        .merge(backwards_compatibility)
     end
   end
 end
