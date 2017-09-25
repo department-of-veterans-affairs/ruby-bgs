@@ -1,3 +1,4 @@
 bgs*gem
 *swp
 vendor/
+Gemfile.lock
