@@ -9,6 +9,9 @@ Style/StringLiterals:
 Style/Documentation:
   Enabled: false
 
+Naming:
+  Enabled: false
+
 Metrics/LineLength:
   Max: 100
 
