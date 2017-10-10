@@ -4,7 +4,7 @@ gemspec
 gem "rake"
 
 group :development, :test do
-  gem "rubocop", "~> 0.36.0"
+  gem "rubocop", "~> 0.50.0"
   gem "pry"
   gem "bundler-audit", git: "https://github.com/rubysec/bundler-audit"
 end
