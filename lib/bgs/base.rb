@@ -117,7 +117,7 @@ module BGS
       # Tack on the destination header if we're sending all requests
       # to a forward proxy.
       headers = {}
-      headers["Host"] = domain if @forward_proxy_url.present?
+      headers["Host"] = domain if @forward_proxy_url
 
       @client ||= Savon.client(
         wsdl: wsdl, soap_header: header, log: @log,
