@@ -33,10 +33,10 @@ module BGS
     # in the HTTP headers under "Host".
     # -`log` will enable `savon` logging.
 
-    def initialize(env:, base_proxy_url: nil, application:,
+    def initialize(env:, forward_proxy_url: nil, application:,
                    client_ip:, client_station_id:, client_username:,
                    ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil,
-                   log: false, use_forward_proxy: false)
+                   log: false)
       @application = application
       @client_ip = client_ip
       @client_station_id = client_station_id
@@ -68,7 +68,7 @@ module BGS
 
     def base_url
       # Proxy url should include protocol, domain, and port.
-      return @base_proxy_url if @base_proxy_url
+      return @forward_proxy_url if @forward_proxy_url
       "#{https? ? 'https' : 'http'}://#{domain}"
     end
 
