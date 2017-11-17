@@ -128,12 +128,14 @@ module BGS
         open_timeout: 30, # in seconds
         read_timeout: 30 # in seconds
       )
-      # can be removed when savon > 2.11.2 is released
-      @client.wsdl.request.headers = headers
     end
 
     # Proxy to call a method on our web service.
     def request(method, message = nil)
+      # can be removed when savon > 2.11.2 is released
+      if @forward_proxy_url
+        client.wsdl.request.headers = {"Host" => domain}
+      end
       client.call(method, message: message)
     rescue Savon::SOAPFault => error
       exception_detail = error.to_hash[:fault][:detail]
