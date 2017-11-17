@@ -11,7 +11,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = ""
 
   gem.add_runtime_dependency "nokogiri", "~> 1.8.1"
-  gem.add_runtime_dependency "savon", "~> 2.11"
+  gem.add_runtime_dependency "savon", "~> 2.12"
 
   gem.files         = Dir["lib/**/*.rb"]
   gem.require_paths = ["lib"]
