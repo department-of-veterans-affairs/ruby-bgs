@@ -128,6 +128,8 @@ module BGS
         open_timeout: 30, # in seconds
         read_timeout: 30 # in seconds
       )
+      # can be removed when savon > 2.11.2 is released
+      @client.wsdl.request.headers = headers
     end
 
     # Proxy to call a method on our web service.
