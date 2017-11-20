@@ -19,16 +19,21 @@ module BGS
     end
   end
 
-  # This class is a base-class from which most Web Services will inheret.
+  # This class is a base-class from which most Web Services will inherit.
   # This contains the basics of how to talk with the BGS SOAP API, in
   # particular, the VA's custom SOAP headers for auditing. As a bonus, it's
   # also aware of the BGS's URL patterns, making it easy to define new
   # web services as needed using some light reflection.
   class Base
     # Base-class constructor. This sets up some instance instance variables
-    # for use later -- such as the client's IP, and who we are. This also
-    # takes an additional argument - `log`, which will enable `savon` logging.
-    def initialize(env:, application:,
+    # for use later -- such as the client's IP, and who we are.
+    # Special notes:
+    # -`forward_proxy_url`, if provided, will funnel all requests to the provided
+    # url instead of directly to BGS, and add the destination hostname
+    # in the HTTP headers under "Host".
+    # -`log` will enable `savon` logging.
+
+    def initialize(env:, forward_proxy_url: nil, application:,
                    client_ip:, client_station_id:, client_username:,
                    ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil,
                    log: false)
@@ -38,6 +43,7 @@ module BGS
       @client_username = client_username
       @log = log
       @env = env
+      @forward_proxy_url = forward_proxy_url
       @ssl_cert_file = ssl_cert_file
       @ssl_cert_key_file = ssl_cert_key_file
       @ssl_ca_cert = ssl_ca_cert
@@ -57,7 +63,17 @@ module BGS
     end
 
     def wsdl
-      "#{https? ? 'https' : 'http'}://#{@env}.vba.va.gov/#{bean_name}/#{@service_name}?WSDL"
+      "#{base_url}/#{bean_name}/#{@service_name}?WSDL"
+    end
+
+    def base_url
+      # Proxy url should include protocol, domain, and port.
+      return @forward_proxy_url if @forward_proxy_url
+      "#{https? ? 'https' : 'http'}://#{domain}"
+    end
+
+    def domain
+      "#{@env}.vba.va.gov"
     end
 
     def bean_name
@@ -98,9 +114,15 @@ module BGS
     # logging can be enabled by passing `log: true` to the constructor
     # of any of the services.
     def client
+      # Tack on the destination header if we're sending all requests
+      # to a forward proxy.
+      headers = {}
+      headers["Host"] = domain if @forward_proxy_url
+
       @client ||= Savon.client(
         wsdl: wsdl, soap_header: header, log: @log,
         ssl_cert_key_file: @ssl_cert_key_file,
+        headers: headers,
         ssl_cert_file: @ssl_cert_file,
         ssl_ca_cert_file: @ssl_ca_cert,
         open_timeout: 30, # in seconds
@@ -110,6 +132,8 @@ module BGS
 
     # Proxy to call a method on our web service.
     def request(method, message = nil)
+      # can be removed when savon > 2.11.2 is released
+      client.wsdl.request.headers = { "Host" => domain } if @forward_proxy_url
       client.call(method, message: message)
     rescue Savon::SOAPFault => error
       exception_detail = error.to_hash[:fault][:detail]
