@@ -125,8 +125,8 @@ module BGS
         headers: headers,
         ssl_cert_file: @ssl_cert_file,
         ssl_ca_cert_file: @ssl_ca_cert,
-        open_timeout: 30, # in seconds
-        read_timeout: 30 # in seconds
+        open_timeout: 600, # in seconds
+        read_timeout: 600 # in seconds
       )
     end
 
