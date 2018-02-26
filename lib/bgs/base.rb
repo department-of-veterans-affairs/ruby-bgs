@@ -136,9 +136,12 @@ module BGS
       client.wsdl.request.headers = { "Host" => domain } if @forward_proxy_url
       client.call(method, message: message)
     rescue Savon::SOAPFault => error
-      exception_detail = error.to_hash[:fault][:detail]
-      raise error unless exception_detail.key? :share_exception
-      raise BGS::ShareError, exception_detail[:share_exception][:message]
+      begin
+        raise BGS::ShareError, error.to_hash[:fault][:detail][:share_exception][:message]
+      rescue NoMethodError
+        raise error
+      end
+      raise error
     end
   end
 end
