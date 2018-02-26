@@ -138,9 +138,10 @@ module BGS
     rescue Savon::SOAPFault => error
       exception_detail = error.to_hash[:fault][:detail]
 
-      # Only test the existence of these two elements (detail and share_exception) because we expect 'fault' will
-      # always be defined if a Savon::SOAPFault error is thrown, and 'message' being undefined is fine with us.
-      raise error unless exception_detail && exception_detail.key? :share_exception
+      # Only test the existence of these two elements (detail and share_exception) because we
+      # expect 'fault' will always be defined if a Savon::SOAPFault error is thrown, and 'message'
+      # being undefined is fine with us.
+      raise error unless exception_detail && exception_detail.key?(:share_exception)
       raise BGS::ShareError, exception_detail[:share_exception][:message]
     end
   end
