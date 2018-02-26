@@ -136,13 +136,13 @@ module BGS
       client.wsdl.request.headers = { "Host" => domain } if @forward_proxy_url
       client.call(method, message: message)
     rescue Savon::SOAPFault => error
-      exception_detail = error.to_hash[:fault][:detail]
-
-      # Only test the existence of these two elements (detail and share_exception) because we
-      # expect 'fault' will always be defined if a Savon::SOAPFault error is thrown, and 'message'
-      # being undefined is fine with us.
-      raise error unless exception_detail && exception_detail.key?(:share_exception)
-      raise BGS::ShareError, exception_detail[:share_exception][:message]
+      begin
+        # Wrap this parsing of the error object in a try/catch block so we default to sending the
+        # original Savon::SOAPFault error if any of the elements in this path are undefined.
+        raise BGS::ShareError, error.to_hash[:fault][:detail][:share_exception][:message]
+      rescue NoMethodError
+        raise error
+      end
     end
   end
 end
