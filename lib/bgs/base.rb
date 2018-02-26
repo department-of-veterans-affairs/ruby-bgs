@@ -141,7 +141,6 @@ module BGS
       rescue NoMethodError
         raise error
       end
-      raise error
     end
   end
 end
