@@ -19,6 +19,15 @@ module BGS
     end
   end
 
+  class PublicError < StandardError
+    attr_accessor :public_message
+
+    def initialize(message)
+      @public_message = message
+      super
+    end
+  end
+
   # This class is a base-class from which most Web Services will inherit.
   # This contains the basics of how to talk with the BGS SOAP API, in
   # particular, the VA's custom SOAP headers for auditing. As a bonus, it's
