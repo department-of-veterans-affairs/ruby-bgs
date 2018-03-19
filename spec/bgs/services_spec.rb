@@ -1,5 +1,6 @@
 require "bgs"
 
+# rubocop:disable Metrics/BlockLength
 describe BGS::Services do
   let(:file_number) { "123456789" }
   let(:bgs_client) do
@@ -51,16 +52,21 @@ describe BGS::Services do
    </soap:Body>
 </soap:Envelope>)
     end
-    let(:error_string) { "#{fault_string} in the Benefits Gateway Service (BGS). Contact your ISO if you need assistance gaining access to BGS." }
+    let(:error_string) do
+      # rubocop:disable Metrics/LineLength
+      "#{fault_string} in the Benefits Gateway Service (BGS). Contact your ISO if you need assistance gaining access to BGS."
+      # rubocop:enable Metrics/LineLength
+    end
 
     it "BGS::Services.can_access? raises a BGS::PublicError that has a public_message" do
       allow_any_instance_of(BGS::ClaimantWebService).to receive(:find_flashes).and_raise(soap_fault)
 
-      expect { bgs_client.can_access?(file_number) }.to raise_error { |error|
+      expect { bgs_client.can_access?(file_number) }.to raise_error do |error|
         expect(error).to be_a(BGS::PublicError)
         expect(error).to respond_to(:public_message)
         expect(error.public_message).to eq(error_string)
-      }
+      end
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
