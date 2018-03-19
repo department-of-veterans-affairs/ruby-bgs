@@ -66,9 +66,18 @@ module BGS
     # name changes.
     def can_access?(ssn)
       claimants.find_flashes(ssn).nil?
-      return true
+      true
+    rescue Savon::SOAPFault => e
+      # Expect error string to look something like the following:
+      # Savon::SOAPFault: (S:Client) ID: {{UUID}}: Logon ID {{CSS_ID}} Not Found
+      # Only extract the final clause of that error message for the public error.
+      #
+      # rubocop:disable Metrics/LineLength
+      raise(BGS::PublicError, "#{Regexp.last_match(1)} in the Benefits Gateway Service (BGS). Contact your ISO if you need assistance gaining access to BGS.") if e.to_s =~ /(Logon ID .* Not Found)/
+      # rubocop:enable Metrics/LineLength
+      raise e
     rescue BGS::ShareError
-      return false
+      false
     end
   end
 end
