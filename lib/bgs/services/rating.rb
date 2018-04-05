@@ -18,7 +18,8 @@ module BGS
     # Returns a wide variety of information about the current profile and ratings in
     # the specified date range.
     def find_by_participant_id_and_date_range(participant_id, start_date, end_date)
-      response = request(:compare_by_date_range,
+      response = request(
+        :compare_by_date_range,
         "RatingDateRange": {
           "ptcpntId": participant_id,
           "startDate": start_date,
