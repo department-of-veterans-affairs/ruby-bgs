@@ -13,14 +13,16 @@
 # organized like this to keep conceptual things at a glance, and then dig
 # in to the implementation(s) (really: declarations)
 
-require "bgs/services/person"
-require "bgs/services/org"
-require "bgs/services/claimant"
+require "bgs/services/address"
 require "bgs/services/awards"
 require "bgs/services/benefit"
-require "bgs/services/veteran"
+require "bgs/services/claimant"
+require "bgs/services/org"
+require "bgs/services/person"
+require "bgs/services/rating"
+require "bgs/services/rating_profile"
 require "bgs/services/standard_data"
-require "bgs/services/address"
+require "bgs/services/veteran"
 
 # Now, we're going to declare a class to hide the actual creation of service
 # objects, since having to construct them all really sucks.
