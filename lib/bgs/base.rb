@@ -146,13 +146,22 @@ module BGS
       client.wsdl.request.headers = { "Host" => domain } if @forward_proxy_url
       client.call(method, message: message)
     rescue Savon::SOAPFault => error
-      begin
-        # Wrap this parsing of the error object in a try/catch block so we default to sending the
-        # original Savon::SOAPFault error if any of the elements in this path are undefined.
-        raise BGS::ShareError, error.to_hash[:fault][:detail][:share_exception][:message]
-      rescue NoMethodError
-        raise error
-      end
+      handle_request_error(error)
+    end
+
+    def handle_request_error(error)
+      raise BGS::ShareError, error.to_hash[:fault][:detail][:share_exception][:message]
+    # If any of the elements in this path are undefined, we will raise a NoMethodError.
+    # Default to sending the original Savon::SOAPFault (or BGS::PublicError) in this case.
+    rescue NoMethodError
+      # Expect error string to look something like the following:
+      # Savon::SOAPFault: (S:Client) ID: {{UUID}}: Logon ID {{CSS_ID}} Not Found
+      # Only extract the final clause of that error message for the public error.
+      #
+      # rubocop:disable Metrics/LineLength
+      raise(BGS::PublicError, "#{Regexp.last_match(1)} in the Benefits Gateway Service (BGS). Contact your ISO if you need assistance gaining access to BGS.") if error.to_s =~ /(Logon ID .* Not Found)/
+      # rubocop:enable Metrics/LineLength
+      raise error
     end
   end
 end

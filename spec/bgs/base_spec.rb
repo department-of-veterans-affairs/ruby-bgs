@@ -1,10 +1,10 @@
 require "bgs"
 
 # rubocop:disable Metrics/BlockLength
-describe BGS::Services do
+describe BGS::Base do
   let(:file_number) { "123456789" }
-  let(:bgs_client) do
-    BGS::Services.new(
+  let(:bgs_base) do
+    BGS::TestBase.new(
       env: "beplinktest",
       application: "TEST_APP",
       client_ip: "127.0.0.1",
@@ -22,7 +22,7 @@ describe BGS::Services do
   let(:nori) { Nori.new(strip_namespaces: true, convert_tags_to: ->(tag) { tag.snakecase.to_sym }) }
   let(:soap_fault) { Savon::SOAPFault.new(http_response, nori) }
 
-  context "When BGS::ClaimantWebService.find_flashes() raises a generic Savon::SoapFault" do
+  context "When Savon::Client.call() raises a generic Savon::SoapFault" do
     let(:response_body) do
       %(<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
    <soap:Body>
@@ -34,9 +34,9 @@ describe BGS::Services do
 </soap:Envelope>)
     end
 
-    it "BGS::Services.can_access? raises a Savon::SOAPFault" do
-      allow_any_instance_of(BGS::ClaimantWebService).to receive(:find_flashes).and_raise(soap_fault)
-      expect { bgs_client.can_access?(file_number) }.to raise_error(Savon::SOAPFault)
+    it "BGS::Base.request raises a Savon::SOAPFault" do
+      allow_any_instance_of(Savon::Client).to receive(:call).and_raise(soap_fault)
+      expect { bgs_base.test_request(:method) }.to raise_error(Savon::SOAPFault)
     end
   end
 
@@ -58,10 +58,9 @@ describe BGS::Services do
       # rubocop:enable Metrics/LineLength
     end
 
-    it "BGS::Services.can_access? raises a BGS::PublicError that has a public_message" do
-      allow_any_instance_of(BGS::ClaimantWebService).to receive(:find_flashes).and_raise(soap_fault)
-
-      expect { bgs_client.can_access?(file_number) }.to raise_error do |error|
+    it "BGS::Base raises a BGS::PublicError that has a public_message" do
+      allow_any_instance_of(Savon::Client).to receive(:call).and_raise(soap_fault)
+      expect { bgs_base.test_request(:method) }.to raise_error do |error|
         expect(error).to be_a(BGS::PublicError)
         expect(error).to respond_to(:public_message)
         expect(error.public_message).to eq(error_string)
@@ -70,3 +69,12 @@ describe BGS::Services do
   end
 end
 # rubocop:enable Metrics/BlockLength
+
+# Helper class to allow us to test BGS::Base's private request() method.
+module BGS
+  class TestBase < BGS::Base
+    def test_request(method, message = nil)
+      request(method, message)
+    end
+  end
+end
