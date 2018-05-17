@@ -33,5 +33,10 @@ module BGS
       response = request(:find_general_information_by_ptcpnt_id, "ptcpntId": id)
       response.body[:find_general_information_by_ptcpnt_id_response][:return]
     end
+
+    def find_all_relationships(id)
+      response = request(:find_all_relationships, "ptcpntId": id)
+      response.body[:find_all_relationships_response][:return][:dependents]
+    end
   end
 end
