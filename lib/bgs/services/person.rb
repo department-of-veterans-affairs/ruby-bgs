@@ -26,5 +26,15 @@ module BGS
       response = request(:find_person_by_file_number, "fileNumber": file_number)
       response.body[:find_person_by_file_number_response][:person_dto]
     end
+
+    def find_person_by_ptcpnt_id(participant_id)
+      response = request(:find_person_by_ptcpnt_id, "ptcpntId": participant_id)
+      response.body[:find_person_by_ptcpnt_id_response][:person_dto]
+    end
+
+    def find_relationships_by_ptcpnt_id_relationship_type(participant_id, type)
+      response = request(:find_relationships_by_ptcpnt_id_relationship_type, "ptcpntId": participant_id, "type": type)
+      response.body[:find_relationships_by_ptcpnt_id_relationship_type_response][:person_dto]
+    end
   end
 end
