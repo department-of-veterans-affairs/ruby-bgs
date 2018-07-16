@@ -66,9 +66,14 @@ module BGS
     # This also requires the claimants service to have been implicitly loaded
     # above; which can break if the require at the top is removed, or if the
     # name changes.
-    def can_access?(ssn)
-      claimants.find_flashes(ssn).nil?
-      true
+    def can_access?(ssn, use_find_veteran_info = false)
+      if (use_find_veteran_info)
+        veteran.find_by_file_number(ssn).nil?
+        true
+      else
+        claimants.find_flashes(ssn).nil?
+        true
+      end
     rescue BGS::ShareError
       false
     end
