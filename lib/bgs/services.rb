@@ -69,11 +69,10 @@ module BGS
     def can_access?(ssn, use_find_veteran_info = false)
       if (use_find_veteran_info)
         veteran.find_by_file_number(ssn).nil?
-        true
       else
         claimants.find_flashes(ssn).nil?
-        true
       end
+      true
     rescue BGS::ShareError
       false
     end
