@@ -30,7 +30,7 @@ module BGS
       response.body[:find_po_as_by_file_numbers_response][:return]
     end
 
-    # finds the POA details by File Number
+    # finds the VSOs a user is associated with
     def find_poas_by_ptcpnt_id(participant_id)
       response = request(:find_po_as_by_ptcpnt_id, "ptcpntId": participant_id)
       response.body[:find_po_as_by_ptcpnt_id_response][:return]
