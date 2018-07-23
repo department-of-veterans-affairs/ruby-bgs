@@ -75,7 +75,7 @@ describe BGS::Base do
       @times_called = 0
       allow_any_instance_of(Savon::Client).to receive(:call).and_return do
         @times_called += 1
-        raise errno_timeout if @times_called == 1
+        raise errno_timeout if @times_called <= 1
         'ok'
       end
 
