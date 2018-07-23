@@ -67,6 +67,29 @@ describe BGS::Base do
       end
     end
   end
+
+  context "When BGS::PersonWebService.find_by_ssn() has a timeout" do
+    let (:errno_timeout) { Errno::ETIMEDOUT.new }
+
+    it "BGS::Base retries intermittent network failures" do
+      @times_called = 0
+      allow_any_instance_of(Savon::Client).to receive(:call).and_return do
+        @times_called += 1
+        raise errno_timeout if @times_called == 1
+        'ok'
+      end
+
+      expect { bgs_base.test_request(:method) }.to_return('ok')
+    end
+
+    it "BGS::Base gives up on persistent network errors" do
+      allow_any_instance_of(Savon::Client).to receive(:call).and_raise(errno_timeout)
+      
+      expect { bgs_base.test_request(:method) }.to raise_error do |error|
+        expect(error).to be_a(Errno::ETIMEDOUT)
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength
 
