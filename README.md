@@ -28,17 +28,15 @@ Testing
 You'll need Ruby 2.3.0 if you don't have it.
 
 > $ rbenv install 2.3.0
-> $ rbenv local 2.3.0
 
 Install dependencies
 
 > $ gem install bundler --no-rdoc --no-ri
 > $ bundle install
-> $ bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}
 
 Run tests
 
-> $ bundle exec rake
+> $ bundle exec rake spec
 
 
 License

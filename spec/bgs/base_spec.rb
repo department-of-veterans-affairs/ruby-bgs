@@ -79,7 +79,7 @@ describe BGS::Base do
         'ok'
       end
 
-      expect { bgs_base.test_request(:method) }.to_return('ok')
+      expect(bgs_base.test_request(:method, nil)).to eq('ok')
     end
 
     it "BGS::Base gives up on persistent network errors" do
