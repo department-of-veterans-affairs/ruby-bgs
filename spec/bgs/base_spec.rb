@@ -71,18 +71,25 @@ describe BGS::Base do
   context "BGS has a timeout" do
     let (:errno_timeout) { Errno::ETIMEDOUT.new }
 
-    it "BGS::Base retries intermittent network failures" do
-      allow_any_instance_of(Savon::Client).to receive(:call).and_raise(errno_timeout)
-
-      expect(bgs_base.test_request(:method)).to eq('ok')
-    end
-
     it "BGS::Base gives up on persistent network errors" do
       allow_any_instance_of(Savon::Client).to receive(:call).and_raise(errno_timeout)
       
       expect { bgs_base.test_request(:method) }.to raise_error do |error|
         expect(error).to be_a(Errno::ETIMEDOUT)
       end
+    end
+
+    it "BGS::Base retries network errors" do
+      try_count = 0
+      allow_any_instance_of(Savon::Client).to receive(:call) do |method, message|
+        if (try_count += 1) <= 1
+          raise errno_timeout
+        else
+          'ok'
+      end
+
+      res = bgs_base.test_request(:method)
+      expect(res).to eq('ok')
     end
   end
 end
