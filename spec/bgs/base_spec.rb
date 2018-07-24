@@ -68,18 +68,13 @@ describe BGS::Base do
     end
   end
 
-  context "When BGS::PersonWebService.find_by_ssn() has a timeout" do
+  context "BGS has a timeout" do
     let (:errno_timeout) { Errno::ETIMEDOUT.new }
 
     it "BGS::Base retries intermittent network failures" do
-      @times_called = 0
-      allow_any_instance_of(Savon::Client).to receive(:call).and_return do
-        @times_called += 1
-        raise errno_timeout if @times_called <= 1
-        'ok'
-      end
+      allow_any_instance_of(Savon::Client).to receive(:call).and_raise(errno_timeout)
 
-      expect(bgs_base.test_request(:method, nil)).to eq('ok')
+      expect(bgs_base.test_request(:method)).to eq('ok')
     end
 
     it "BGS::Base gives up on persistent network errors" do
