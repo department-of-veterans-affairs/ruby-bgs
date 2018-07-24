@@ -142,23 +142,11 @@ module BGS
 
     # Proxy to call a method on our web service.
     def request(method, message = nil)
-      try_count = 0
-      begin
-        # can be removed when savon > 2.11.2 is released
-        client.wsdl.request.headers = { "Host" => domain } if @forward_proxy_url
-        client.call(method, message: message)
-      rescue Errno::ETIMEDOUT, Errno::ECONNRESET => e
-        if (try_count += 1) < 3
-          # 2s, 4s
-          max_sleep_seconds = Float(2 ** try_count)
-          sleep rand(0..max_sleep_seconds)
-          retry
-        else
-          raise
-        end
-      rescue Savon::SOAPFault => error
-        handle_request_error(error)
-      end
+      # can be removed when savon > 2.11.2 is released
+      client.wsdl.request.headers = { "Host" => domain } if @forward_proxy_url
+      client.call(method, message: message)
+    rescue Savon::SOAPFault => error
+      handle_request_error(error)
     end
 
     def handle_request_error(error)
