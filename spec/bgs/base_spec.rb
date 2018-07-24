@@ -86,6 +86,7 @@ describe BGS::Base do
           raise errno_timeout
         else
           'ok'
+        end
       end
 
       res = bgs_base.test_request(:method)
