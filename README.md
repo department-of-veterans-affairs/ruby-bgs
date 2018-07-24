@@ -21,6 +21,24 @@ bgs = BGS::Services.new(
 puts bgs.people.find_by_ssn "9999999999"
 ```
 
+
+Testing
+-------
+
+You'll need Ruby 2.2.4 if you don't have it.
+
+> $ rbenv install 2.2.4
+
+Install dependencies
+
+> $ gem install bundler --no-rdoc --no-ri
+> $ bundle install
+
+Run tests
+
+> $ bundle exec rake spec
+
+
 License
 =======
 

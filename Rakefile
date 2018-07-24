@@ -1,8 +1,11 @@
 require "bundler/gem_tasks"
 require "rubocop/rake_task"
 require "bundler/audit/task"
+require "rspec/core/rake_task"
 
-task default: [:rubocop, "bundle:audit"]
+task default: [:spec, :rubocop, "bundle:audit"]
+
+RSpec::Core::RakeTask.new(:spec)
 
 desc "Run RuboCop on the src directory"
 RuboCop::RakeTask.new(:rubocop) do |task|
