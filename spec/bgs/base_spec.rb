@@ -86,7 +86,7 @@ describe BGS::Base do
       allow_any_instance_of(Savon::Client).to receive(:call).and_raise(errno_timeout)
       
       expect { bgs_base.test_request(:method) }.to raise_error do |error|
-        expect(error).to be_a(Errno::ETIMEOUT)
+        expect(error).to be_a(Errno::ETIMEDOUT)
       end
     end
   end

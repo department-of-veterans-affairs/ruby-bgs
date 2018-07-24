@@ -25,18 +25,20 @@ puts bgs.people.find_by_ssn "9999999999"
 Testing
 -------
 
-You'll need Ruby 2.2.4 if you don't have it.
+You'll need Ruby 2.3.0 if you don't have it.
 
-> $ rbenv install 2.2.4
+> $ rbenv install 2.3.0
+> $ rbenv local 2.3.0
 
 Install dependencies
 
 > $ gem install bundler --no-rdoc --no-ri
 > $ bundle install
+> $ bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}
 
-Create the database
+Run tests
 
-> $ rake db:create
+> $ bundle exec rake
 
 
 License
