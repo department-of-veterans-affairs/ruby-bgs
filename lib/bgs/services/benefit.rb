@@ -11,7 +11,8 @@ module BGS
     def find_by_vbms_file_number(file_number)
       response = request(:find_benefit_claim, "fileNumber": file_number)
 
-      response.body[:find_benefit_claim_response][:return][:participant_record][:selection] || []
+      response.body[:find_benefit_claim_response][:return][:participant_record][:selection] ||
+        response.body[:find_benefit_claim_response][:return][:participant_record] || []
     end
 
     def find_claim_detail_by_id(id)
