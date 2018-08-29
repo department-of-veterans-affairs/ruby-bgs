@@ -35,5 +35,11 @@ module BGS
       response = request(:find_po_as_by_ptcpnt_id, "ptcpntId": participant_id)
       response.body[:find_po_as_by_ptcpnt_id_response][:return]
     end
+
+    # batch find poas based on participant ids
+    def find_poas_by_ptcpnt_ids(participant_ids)
+      response = request(:find_po_as_by_ptcpnt_ids, "ptcpntIds": participant_ids)
+      response.body[:find_po_as_by_ptcpnt_ids_response][:return]
+    end
   end
 end
