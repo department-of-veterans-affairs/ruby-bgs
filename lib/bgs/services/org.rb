@@ -35,5 +35,20 @@ module BGS
       response = request(:find_po_as_by_ptcpnt_id, "ptcpntId": participant_id)
       response.body[:find_po_as_by_ptcpnt_id_response][:return]
     end
+
+    # find the limited POA set to the claim
+    # claim_ids can be a single benefit claim id or an array of benefit claim ids
+    def find_limited_poas_by_bnft_claim_ids(claim_ids)
+      response = request(:find_limited_poas_by_bnft_claim_ids, "bnftClaimId": claim_ids)
+      response.body[:find_limited_poas_by_bnft_claim_ids_response][:limited_poa]
+    end
+    
+    # gets the general and limited POA history
+    # note: will also include the general POA history for each non-veteran 
+    # claimant on the veterans claims
+    def find_poa_history_by_ptcpnt_id(participant_id)
+      response = request(:find_poa_history_by_ptcpnt_id, "ptcpntId": participant_id)
+      response.body[:find_poa_history_by_ptcpnt_id_response][:poa_history]
+    end
   end
 end
