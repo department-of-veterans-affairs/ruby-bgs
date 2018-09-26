@@ -33,7 +33,7 @@ module BGS
   class Services
     def initialize(env:, application:,
                    client_ip:, client_station_id:, client_username:,
-                   forward_proxy_url: nil,
+                   forward_proxy_url: nil, jumpbox_url: nil,
                    ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil,
                    log: false)
 
@@ -44,6 +44,7 @@ module BGS
                   ssl_cert_key_file: ssl_cert_key_file,
                   ssl_ca_cert: ssl_ca_cert,
                   forward_proxy_url: forward_proxy_url,
+                  jumpbox_url: jumpbox_url,
                   log: log }
     end
 

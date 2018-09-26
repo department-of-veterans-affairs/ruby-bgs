@@ -11,6 +11,7 @@ describe BGS::Base do
       client_station_id: 283,
       client_username: "VACOUSERT",
       forward_proxy_url: nil,
+      jumpbox_url: nil,
       log: true
     )
   end
