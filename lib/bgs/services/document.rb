@@ -15,12 +15,7 @@ module BGS
 
     def find_claimant_letters(document_id)
       response = request(:find_claimant_letters, "documentId": document_id)
-      response.body[:find_claimant_letters_response][:return]
-    end
-
-    def find_letters_in_development(claim_id)
-      response = request(:find_letters_in_development, "claimId": claim_id)
-      response.body[:find_letters_in_development_response][:return]
+      response.body[:find_claimant_letters_response]
     end
 
     def manage_claimant_letter_v2(claim_id:, program_type_cd:, claimant_participant_id:)
@@ -44,7 +39,7 @@ module BGS
               "suspnsDys": "30",
               "suspnsUnit": "DAYS"
             },
-            "dvlpmntTc": "CLMNTRQST",
+            "dvlpmtTc": "CLMNTRQST",
             "fileSttTc": "INDVLPMT",
             "outdcmtTc": "DV",
             "printDt": DateTime.now,
@@ -55,17 +50,14 @@ module BGS
         },
         "generateClaimantLetter": true
       )
-      response.body
-      # response.body[:manage_claimant_letter_v2_response][:return]
-      # response.body[:manage_claimant_letter_v2_response][:return][:envelope][:letters][:doc_id]
+      response.body[:manage_claimant_letter_v2_response][:envelope][:letters][:docid]
     end
 
     # Generates the tracked items based on developmentActions in the letters
     # in the claimant letter
-    # Returns the BenefitClaim, which will include the development actions and letters
     def generate_tracked_items(claim_id)
       response = request(:generate_tracked_items, "claimId": claim_id)
-      response.body[:generate_tracked_items_response][:return]
+      response.body[:generate_tracked_items_response][:benefit_claim][:dvlpmt_items][:dvlpmt_item_id]
     end
   end
 end
