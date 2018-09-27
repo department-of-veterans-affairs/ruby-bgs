@@ -42,7 +42,12 @@ module BGS
     # in the HTTP headers under "Host".
     # -`log` will enable `savon` logging.
 
-    def initialize(env:, forward_proxy_url: nil, application:,
+    # `jumpbox_url` is to be able to test through the jumpbox.
+    # in order to use this, add the following line to your jumpbox configuration in ~/.ssh/config
+      # LocalForward [local port number] beplinktest.vba.va.gov:80
+    # and when initializing the client, set the jumpbox_url = 'http://127.0.0.1:[local port number]'
+
+    def initialize(env:, forward_proxy_url: nil, jumpbox_url: nil, application:,
                    client_ip:, client_station_id:, client_username:,
                    ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil,
                    log: false)
@@ -53,6 +58,7 @@ module BGS
       @log = log
       @env = env
       @forward_proxy_url = forward_proxy_url
+      @jumpbox_url = jumpbox_url
       @ssl_cert_file = ssl_cert_file
       @ssl_cert_key_file = ssl_cert_key_file
       @ssl_ca_cert = ssl_ca_cert
@@ -76,8 +82,9 @@ module BGS
     end
 
     def base_url
-      # Proxy url should include protocol, domain, and port.
+      # Proxy url or jumpbox url should include protocol, domain, and port.
       return @forward_proxy_url if @forward_proxy_url
+      return @jumpbox_url if @jumpbox_url
       "#{https? ? 'https' : 'http'}://#{domain}"
     end
 
