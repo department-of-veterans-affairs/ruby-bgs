@@ -25,9 +25,9 @@ puts bgs.people.find_by_ssn "9999999999"
 Testing
 -------
 
-You'll need Ruby 2.2.4 if you don't have it.
+You'll need Ruby 2.5.1 if you don't have it.
 
-> $ rbenv install 2.2.4
+> $ rbenv install 2.5.1
 
 Install dependencies
 

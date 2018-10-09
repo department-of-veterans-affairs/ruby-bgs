@@ -3,6 +3,6 @@ cache: bundler
 
 matrix:
   include:
-    - rvm: 2.2.4
+    - rvm: 2.5.1
 
   fast_finish: true
