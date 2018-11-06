@@ -16,5 +16,16 @@ module BGS
       response = request(:find_po_as)
       response.body[:find_po_as_response][:power_of_attorney_dto]
     end
+
+    # Used to find out which payee codes are valid for which end product type
+    def find_payee_codes_for_end_product(veteran_is_deceased, end_product_code)
+      response = request(:find_payee_cds_by_bnft_claim_type_cd,
+        "shareComndTypeCd": "CEST",
+        "pgmTypeCd": veteran_is_deceased ? "CPD" : "CPL",
+        "svcTypeCd": "CP",
+        "bnftClaimTypeCd": end_product_code
+      )
+      response.body[:find_payee_cds_by_bnft_claim_type_cd_response][:payee_type_dto]
+    end
   end
 end
