@@ -136,14 +136,16 @@ module BGS
       headers["Host"] = domain if @forward_proxy_url
 
       @client ||= Savon.client(
-        wsdl: wsdl, soap_header: header, log: @log,
+        wsdl: wsdl, soap_header: header, log: @true,
         ssl_cert_key_file: @ssl_cert_key_file,
         headers: headers,
         ssl_cert_file: @ssl_cert_file,
         ssl_ca_cert_file: @ssl_ca_cert,
         open_timeout: 600, # in seconds
         read_timeout: 600, # in seconds
-        convert_request_keys_to: :none
+        convert_request_keys_to: :none,
+        pretty_print_xml: true,
+        log_level: :debug,
       )
     end
 
