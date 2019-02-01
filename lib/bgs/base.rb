@@ -130,13 +130,18 @@ module BGS
     # logging can be enabled by passing `log: true` to the constructor
     # of any of the services.
     def client
+      Rails.logger.info '-----client-----'
       # Tack on the destination header if we're sending all requests
       # to a forward proxy.
       headers = {}
       headers["Host"] = domain if @forward_proxy_url
 
+
+
       @client ||= Savon.client(
-        wsdl: wsdl, soap_header: header, log: @true,
+        wsdl: wsdl,
+        soap_header: header,
+        log: @true,
         ssl_cert_key_file: @ssl_cert_key_file,
         headers: headers,
         ssl_cert_file: @ssl_cert_file,
@@ -146,11 +151,15 @@ module BGS
         convert_request_keys_to: :none,
         pretty_print_xml: true,
         log_level: :debug,
+        logger: Rails.logger
       )
     end
 
     # Proxy to call a method on our web service.
     def request(method, message = nil)
+      Rails.logger.info "-----------"
+      Rails.logger.info "Request is called"
+      Rails.logger.info "-----------"
       # can be removed when savon > 2.11.2 is released
       client.wsdl.request.headers = { "Host" => domain } if @forward_proxy_url
       client.call(method, message: message)
