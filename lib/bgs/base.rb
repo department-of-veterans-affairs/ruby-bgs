@@ -136,12 +136,12 @@ module BGS
       headers = {}
       headers["Host"] = domain if @forward_proxy_url
 
-
+      Rails.logger.info wsdl
 
       @client ||= Savon.client(
         wsdl: wsdl,
         soap_header: header,
-        log: @true,
+        log: true,
         ssl_cert_key_file: @ssl_cert_key_file,
         headers: headers,
         ssl_cert_file: @ssl_cert_file,
