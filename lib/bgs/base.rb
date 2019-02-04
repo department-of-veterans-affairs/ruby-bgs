@@ -83,7 +83,6 @@ module BGS
 
     def base_url
       # Proxy url or jumpbox url should include protocol, domain, and port.
-      return @forward_proxy_url if @forward_proxy_url
       return @jumpbox_url if @jumpbox_url
       "#{https? ? 'https' : 'http'}://#{domain}"
     end
