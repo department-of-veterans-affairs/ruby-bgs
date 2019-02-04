@@ -78,7 +78,8 @@ module BGS
     end
 
     def wsdl
-      "#{base_url}/#{bean_name}/#{@service_name}?WSDL"
+      #"#{base_url}/#{bean_name}/#{@service_name}?WSDL"
+      "https://internal-dsva-vagov-dev-fwdproxy-1893365470.us-gov-west-1.elb.amazonaws.com:4447/OrgWebServiceBean/OrgWebService?WSDL"
     end
 
     def base_url
