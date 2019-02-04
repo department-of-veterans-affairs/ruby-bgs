@@ -41,5 +41,11 @@ module BGS
       response = request(:find_po_as_by_ptcpnt_ids, "ptcpntIds": participant_ids)
       response.body[:find_po_as_by_ptcpnt_ids_response][:return]
     end
+    
+    # finds the POA details by Claim Id's
+    def find_poas_by_claim_id(claim_id)
+      response = request(:find_po_as_by_bnft_claim_ids, "claimId": claim_id)
+      response.body[:find_po_as_by_bnft_claim_ids_response][:return]
+    end
   end
 end
