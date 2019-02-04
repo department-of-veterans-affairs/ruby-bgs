@@ -132,19 +132,23 @@ module BGS
     def client
       # Tack on the destination header if we're sending all requests
       # to a forward proxy.
-      headers = {}
-      headers["Host"] = domain if @forward_proxy_url
+      options = { 
+                  wsdl: wsdl, 
+                  soap_header: header, 
+                  log: @log,
+                  headers: {},
+                  open_timeout: 600, # in seconds
+                  read_timeout: 600, # in seconds
+                  convert_request_keys_to: :none
+                }
 
-      @client ||= Savon.client(
-        wsdl: wsdl, soap_header: header, log: @log,
-        ssl_cert_key_file: @ssl_cert_key_file,
-        headers: headers,
-        ssl_cert_file: @ssl_cert_file,
-        ssl_ca_cert_file: @ssl_ca_cert,
-        open_timeout: 600, # in seconds
-        read_timeout: 600, # in seconds
-        convert_request_keys_to: :none
-      )
+      options[:proxy]             = @forward_proxy_url if @forward_proxy_url
+      options[:headers]["Host"]   = domain if @forward_proxy_url
+      options[:ssl_cert_key_file] = @ssl_cert_key_file if @ssl_cert_key_file
+      options[:ssl_cert_file]     = @ssl_cert_file if @ssl_cert_file
+      options[:ssl_ca_cert_file]  = @ssl_ca_cert if @ssl_ca_cert
+      
+      @client ||= Savon.client(options)
     end
 
     # Proxy to call a method on our web service.
