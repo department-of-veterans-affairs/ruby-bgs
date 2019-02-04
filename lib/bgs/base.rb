@@ -130,6 +130,7 @@ module BGS
     # logging can be enabled by passing `log: true` to the constructor
     # of any of the services.
     def client
+      return @client if @client
       # Tack on the destination header if we're sending all requests
       # to a forward proxy.
       options = { 
