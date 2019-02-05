@@ -139,7 +139,7 @@ module BGS
       # to a forward proxy.
       options = { 
                   wsdl: wsdl, 
-                  end_point: end_point,
+                  endpoint: end_point,
                   soap_header: header, 
                   log: @log,
                   headers: {},
