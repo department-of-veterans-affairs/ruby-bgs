@@ -76,13 +76,18 @@ module BGS
     def https?
       @ssl_cert_file && @ssl_cert_key_file
     end
+    
+    def end_point
+      "#{base_url}/#{bean_name}/#{@service_name}"
+    end
 
     def wsdl
-      "#{base_url}/#{bean_name}/#{@service_name}?WSDL"
+      "#{end_point}?WSDL"
     end
 
     def base_url
       # Proxy url or jumpbox url should include protocol, domain, and port.
+      return @forward_proxy_url if @forward_proxy_url
       return @jumpbox_url if @jumpbox_url
       "#{https? ? 'https' : 'http'}://#{domain}"
     end
@@ -134,6 +139,7 @@ module BGS
       # to a forward proxy.
       options = { 
                   wsdl: wsdl, 
+                  end_point: end_point,
                   soap_header: header, 
                   log: @log,
                   headers: {},
@@ -148,7 +154,7 @@ module BGS
       options[:ssl_cert_file]     = @ssl_cert_file if @ssl_cert_file
       options[:ssl_ca_cert_file]  = @ssl_ca_cert if @ssl_ca_cert
       
-      @client ||= Savon.client(options)
+      @client = Savon.client(options)
     end
 
     # Proxy to call a method on our web service.
