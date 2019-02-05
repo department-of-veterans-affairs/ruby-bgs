@@ -148,7 +148,6 @@ module BGS
                   convert_request_keys_to: :none
                 }
 
-      options[:proxy]             = @forward_proxy_url if @forward_proxy_url
       options[:headers]["Host"]   = domain if @forward_proxy_url
       options[:ssl_cert_key_file] = @ssl_cert_key_file if @ssl_cert_key_file
       options[:ssl_cert_file]     = @ssl_cert_file if @ssl_cert_file
