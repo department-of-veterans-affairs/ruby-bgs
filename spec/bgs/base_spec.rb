@@ -10,6 +10,8 @@ describe BGS::Base do
       client_ip: "127.0.0.1",
       client_station_id: 283,
       client_username: "VACOUSERT",
+      external_uid: 'test',
+      external_key: '12345',
       forward_proxy_url: nil,
       jumpbox_url: nil,
       log: true
