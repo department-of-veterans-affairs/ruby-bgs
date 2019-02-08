@@ -48,13 +48,15 @@ module BGS
     # and when initializing the client, set the jumpbox_url = 'http://127.0.0.1:[local port number]'
 
     def initialize(env:, forward_proxy_url: nil, jumpbox_url: nil, application:,
-                   client_ip:, client_station_id:, client_username:,
+                   client_ip:, client_station_id:, client_username:, external_uid:, external_key:,
                    ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil,
                    log: false)
       @application = application
       @client_ip = client_ip
       @client_station_id = client_station_id
       @client_username = client_username
+      @external_uid = external_uid
+      @external_key = external_key
       @log = log
       @env = env
       @forward_proxy_url = forward_proxy_url
@@ -117,13 +119,15 @@ module BGS
     <vaws:VaServiceHeaders xmlns:vaws="http://vbawebservices.vba.va.gov/vawss">
       <vaws:CLIENT_MACHINE></vaws:CLIENT_MACHINE>
       <vaws:STN_ID></vaws:STN_ID>
+      <vaws:ExternalUid></vaws:ExternalUid>
+      <vaws:ExternalKey></vaws:ExternalKey>
       <vaws:applicationName></vaws:applicationName>
     </vaws:VaServiceHeaders>
   </wsse:Security>
   EOXML
       # }}}
 
-      { Username: @client_username, CLIENT_MACHINE: @client_ip,
+      { Username: @client_username, CLIENT_MACHINE: @client_ip, ExternalUid: @external_uid, ExternalKey: @external_key,
         STN_ID: @client_station_id, applicationName: @application }.each do |k, v|
         header.xpath(".//*[local-name()='#{k}']")[0].content = v
       end
