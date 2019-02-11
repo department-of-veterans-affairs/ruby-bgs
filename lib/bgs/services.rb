@@ -40,6 +40,8 @@ module BGS
       @config = { env: env, application: application, client_ip: client_ip,
                   client_station_id: client_station_id,
                   client_username: client_username,
+                  external_uid: external_uid,
+                  external_key: external_key,
                   ssl_cert_file: ssl_cert_file,
                   ssl_cert_key_file: ssl_cert_key_file,
                   ssl_ca_cert: ssl_ca_cert,
