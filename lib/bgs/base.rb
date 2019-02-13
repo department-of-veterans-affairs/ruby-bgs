@@ -78,7 +78,7 @@ module BGS
     def https?
       @ssl_cert_file && @ssl_cert_key_file
     end
-    
+
     def end_point
       "#{base_url}/#{bean_name}/#{@service_name}"
     end
@@ -139,12 +139,16 @@ module BGS
     # of any of the services.
     def client
       return @client if @client
+      @client = Savon.client(client_options)
+    end
+
+    def client_options
       # Tack on the destination header if we're sending all requests
       # to a forward proxy.
-      options = { 
-                  wsdl: wsdl, 
+      options = {
+                  wsdl: wsdl,
                   endpoint: end_point,
-                  soap_header: header, 
+                  soap_header: header,
                   log: @log,
                   headers: {},
                   open_timeout: 600, # in seconds
@@ -156,8 +160,7 @@ module BGS
       options[:ssl_cert_key_file] = @ssl_cert_key_file if @ssl_cert_key_file
       options[:ssl_cert_file]     = @ssl_cert_file if @ssl_cert_file
       options[:ssl_ca_cert_file]  = @ssl_ca_cert if @ssl_ca_cert
-      
-      @client = Savon.client(options)
+      options
     end
 
     # Proxy to call a method on our web service.

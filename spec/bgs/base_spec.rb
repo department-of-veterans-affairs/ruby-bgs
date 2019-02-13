@@ -70,6 +70,27 @@ describe BGS::Base do
       end
     end
   end
+
+  context "building the savon client" do
+    it "should intiate the client from the options with the external options" do
+      base = BGS::TestBase.new(
+        env: "beplinktest",
+        application: "TEST_APP",
+        client_ip: "127.0.0.1",
+        client_station_id: 283,
+        client_username: "VACOUSERT",
+        external_uid: 'test',
+        external_key: '12345',
+        ssl_cert_key_file: "mycertkeyfile.crt",
+        ssl_cert_file: "mycertfile.crt",
+        ssl_ca_cert: "mycacertfile.crt"
+      )
+      expect(base.instance_eval{client_options}[:ssl_cert_key_file]).to eq("mycertkeyfile.crt")
+      expect(base.instance_eval{client_options}[:ssl_cert_file]).to eq("mycertfile.crt")
+      expect(base.instance_eval{client_options}[:ssl_ca_cert_file]).to eq("mycacertfile.crt")
+    end
+
+  end
 end
 # rubocop:enable Metrics/BlockLength
 
