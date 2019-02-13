@@ -90,7 +90,52 @@ describe BGS::Base do
       expect(base.instance_eval{client_options}[:ssl_ca_cert_file]).to eq("mycacertfile.crt")
     end
 
+    it 'should add the external headers if present?' do
+        base = BGS::TestBase.new(
+          env: "beplinktest",
+          application: "TEST_APP",
+          client_ip: "127.0.0.1",
+          client_station_id: 283,
+          client_username: "VACOUSERT",
+          external_uid: 'test',
+          external_key: '12345'
+        )
+        header_to_match = '<wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+           <wsse:UsernameToken>
+             <wsse:Username>VACOUSERT</wsse:Username>
+           </wsse:UsernameToken>
+           <vaws:VaServiceHeaders xmlns:vaws="http://vbawebservices.vba.va.gov/vawss">
+             <vaws:CLIENT_MACHINE>127.0.0.1</vaws:CLIENT_MACHINE>
+             <vaws:STN_ID>283</vaws:STN_ID>
+             <vaws:ExternalUid>test</vaws:ExternalUid><vaws:ExternalKey>12345</vaws:ExternalKey>
+             <vaws:applicationName>TEST_APP</vaws:applicationName>
+           </vaws:VaServiceHeaders>
+         </wsse:Security>'.gsub(/\s+/, "")
+        expect(base.instance_eval{header}.to_s.gsub(/\s+/, "")).to eq(header_to_match)
+    end
+
+    it 'should not add the external headers if not assigned' do
+        base = BGS::TestBase.new(
+          env: "beplinktest",
+          application: "TEST_APP",
+          client_ip: "127.0.0.1",
+          client_station_id: 283,
+          client_username: "VACOUSERT",
+        )
+        header_to_match = '<wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+           <wsse:UsernameToken>
+             <wsse:Username>VACOUSERT</wsse:Username>
+           </wsse:UsernameToken>
+           <vaws:VaServiceHeaders xmlns:vaws="http://vbawebservices.vba.va.gov/vawss">
+             <vaws:CLIENT_MACHINE>127.0.0.1</vaws:CLIENT_MACHINE>
+             <vaws:STN_ID>283</vaws:STN_ID>
+             <vaws:applicationName>TEST_APP</vaws:applicationName>
+           </vaws:VaServiceHeaders>
+         </wsse:Security>'.gsub(/\s+/, "")
+        expect(base.instance_eval{header}.to_s.gsub(/\s+/, "")).to eq(header_to_match)
+    end
   end
+
 end
 # rubocop:enable Metrics/BlockLength
 

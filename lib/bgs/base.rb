@@ -48,7 +48,7 @@ module BGS
     # and when initializing the client, set the jumpbox_url = 'http://127.0.0.1:[local port number]'
 
     def initialize(env:, forward_proxy_url: nil, jumpbox_url: nil, application:,
-                   client_ip:, client_station_id:, client_username:, external_uid:, external_key:,
+                   client_ip:, client_station_id:, client_username:, external_uid: nil, external_key: nil,
                    ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil,
                    log: false)
       @application = application
@@ -119,16 +119,20 @@ module BGS
     <vaws:VaServiceHeaders xmlns:vaws="http://vbawebservices.vba.va.gov/vawss">
       <vaws:CLIENT_MACHINE></vaws:CLIENT_MACHINE>
       <vaws:STN_ID></vaws:STN_ID>
-      <vaws:ExternalUid></vaws:ExternalUid>
-      <vaws:ExternalKey></vaws:ExternalKey>
+      #{@external_uid ? '<vaws:ExternalUid></vaws:ExternalUid><vaws:ExternalKey></vaws:ExternalKey>' : ''}
       <vaws:applicationName></vaws:applicationName>
     </vaws:VaServiceHeaders>
   </wsse:Security>
   EOXML
       # }}}
 
-      { Username: @client_username, CLIENT_MACHINE: @client_ip, ExternalUid: @external_uid, ExternalKey: @external_key,
-        STN_ID: @client_station_id, applicationName: @application }.each do |k, v|
+      header = update_header_tags(header, { Username: @client_username, CLIENT_MACHINE: @client_ip, STN_ID: @client_station_id, applicationName: @application })
+      header = update_header_tags(header, { ExternalUid: @external_uid, ExternalKey: @external_key }) if @external_uid
+      header
+    end
+
+    def update_header_tags(header, tags)
+      tags.each do |k, v|
         header.xpath(".//*[local-name()='#{k}']")[0].content = v
       end
       header
