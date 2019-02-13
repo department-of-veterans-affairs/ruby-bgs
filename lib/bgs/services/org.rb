@@ -12,6 +12,7 @@ module BGS
   # findPOAsByPtcpntIds    - finds the POA details by Participant IDs.
   # findPOAsByFileNumbers  - finds the POA details by File Number.
   # findPOAsByBnftClaimIds - finds the POA details by Benefit Claim ID.
+  # findLimitedPoasByBnftClaimIds - finds the limited (claim-level) POA details by Benefit Claim ID.
   #
   class OrgWebService < BGS::Base
     def self.service_name
@@ -41,11 +42,17 @@ module BGS
       response = request(:find_po_as_by_ptcpnt_ids, "ptcpntIds": participant_ids)
       response.body[:find_po_as_by_ptcpnt_ids_response][:return]
     end
-    
+
     # finds the POA details by Claim Id's
     def find_poas_by_claim_id(claim_id)
       response = request(:find_po_as_by_bnft_claim_ids, "claimId": claim_id)
       response.body[:find_po_as_by_bnft_claim_ids_response][:return]
+    end
+
+    # find claim-level limited POA
+    def find_limited_poas_by_bnft_claim_ids(claim_id)
+      response = request(:find_limited_poas_by_bnft_claim_ids, "bnftClaimId": claim_id)
+      response.body[:find_limited_poas_by_bnft_claim_ids_response][:return]
     end
   end
 end
