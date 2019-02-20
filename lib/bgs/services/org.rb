@@ -46,7 +46,7 @@ module BGS
     # find claim-level limited POA
     def find_limited_poas_by_bnft_claim_ids(claim_id)
       response = request(:find_limited_poas_by_bnft_claim_ids, "bnftClaimId": claim_id)
-      response.body[:find_limited_poas_by_bnft_claim_ids_response]
+      response.body[:find_limited_poas_by_bnft_claim_ids_response][:limited_poa]
     end
   end
 end
