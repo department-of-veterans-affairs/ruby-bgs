@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = "paul.tagliamonte@va.gov"
   gem.homepage      = ""
 
-  gem.add_runtime_dependency "nokogiri", "~> 1.8.2"
+  gem.add_runtime_dependency "nokogiri", "~> 1.10"
   gem.add_runtime_dependency "savon", "~> 2.11"
 
   gem.files         = Dir["lib/**/*.rb"]
