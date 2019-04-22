@@ -8,4 +8,8 @@ group :development, :test do
   gem "pry"
   gem "rspec"
   gem "rubocop"
+  # nokogiri versions before 1.10.3 are affected by CVE-2019-11068.
+  # Explicitly define nokogiri version here to avoid that.
+  # https://github.com/sparklemotion/nokogiri/issues/1892
+  gem "nokogiri", "1.10.3"
 end
