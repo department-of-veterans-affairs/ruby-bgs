@@ -141,7 +141,7 @@ module BGS
         headers: headers,
         ssl_cert_file: @ssl_cert_file,
         ssl_ca_cert_file: @ssl_ca_cert,
-        open_timeout: 600, # in seconds
+        open_timeout: 10, # in seconds
         read_timeout: 600, # in seconds
         convert_request_keys_to: :none
       )
@@ -151,6 +151,10 @@ module BGS
     def request(method, message = nil)
       # can be removed when savon > 2.11.2 is released
       client.wsdl.request.headers = { "Host" => domain } if @forward_proxy_url
+      client.call(method, message: message)
+    rescue HTTPClient::ConnectTimeoutError, HTTPClient::ReceiveTimeoutError, Errno::ETIMEDOUT => _err
+      # re-try once assuming this was a server-side hiccup
+      sleep 1
       client.call(method, message: message)
     rescue Savon::SOAPFault => error
       handle_request_error(error)
