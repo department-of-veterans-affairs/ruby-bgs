@@ -22,6 +22,15 @@ describe BGS::Base do
   let(:http_response) { HTTPI::Response.new(500, {}, response_body) }
   let(:nori) { Nori.new(strip_namespaces: true, convert_tags_to: ->(tag) { tag.snakecase.to_sym }) }
   let(:soap_fault) { Savon::SOAPFault.new(http_response, nori) }
+  let(:timeout_error) { Errno::ETIMEDOUT.new }
+
+  context "When Savon::Client receives a connection timeout error" do
+    it "re-tries one time" do
+      allow_any_instance_of(Savon::Client).to receive(:call).and_raise(timeout_error)
+      expect(bgs_base).to receive(:client).twice.and_call_original
+      expect { bgs_base.test_request(:method) }.to raise_error(Errno::ETIMEDOUT)
+    end
+  end
 
   context "When Savon::Client.call() raises a generic Savon::SoapFault" do
     let(:response_body) do
@@ -37,6 +46,7 @@ describe BGS::Base do
 
     it "BGS::Base.request raises a Savon::SOAPFault" do
       allow_any_instance_of(Savon::Client).to receive(:call).and_raise(soap_fault)
+      expect(bgs_base).to receive(:client).once.and_call_original
       expect { bgs_base.test_request(:method) }.to raise_error(Savon::SOAPFault)
     end
   end

@@ -6,6 +6,7 @@
 
 require "savon"
 require "nokogiri"
+require "httpclient"
 
 module BGS
   # This error is raised when the BGS SOAP API returns a ShareException
@@ -149,8 +150,6 @@ module BGS
 
     # Proxy to call a method on our web service.
     def request(method, message = nil)
-      # can be removed when savon > 2.11.2 is released
-      client.wsdl.request.headers = { "Host" => domain } if @forward_proxy_url
       client.call(method, message: message)
     rescue HTTPClient::ConnectTimeoutError, HTTPClient::ReceiveTimeoutError, Errno::ETIMEDOUT => _err
       # re-try once assuming this was a server-side hiccup
