@@ -51,6 +51,35 @@ describe BGS::Base do
     end
   end
 
+  context "When Savon::Client.call() raises a specific Savon::SoapFault" do
+    let(:message) { "Connection reset by peer" }
+    let(:response_body) do
+      %(<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <soap:Fault>
+         <faultcode>soap:Server</faultcode>
+         <faultstring>Fault occurred while processing.</faultstring>
+         <Detail>
+            <ShareException>
+              <Message>#{message}</Message>
+            </ShareException>
+         </Detail>
+      </soap:Fault>
+   </soap:Body>
+</soap:Envelope>)
+    end
+
+    it "BGS::Base.request raises a Savon::SOAPFault" do
+      allow_any_instance_of(Savon::Client).to receive(:call).and_raise(soap_fault)
+
+      expect { bgs_base.test_request(:method) }.to raise_error do |error|
+        expect(error.class).to eq BGS::ShareError
+        expect(error.message).to eq message
+        expect(error.code).to eq 500
+      end
+     end
+  end
+
   context "When BGS::ClaimantWebService.find_flashes() raises a logon not found error" do
     let(:fault_string) { "Logon ID VACOHSOLO Not Found" }
     let(:response_body) do
