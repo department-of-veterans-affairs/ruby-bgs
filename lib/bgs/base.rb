@@ -9,26 +9,6 @@ require "nokogiri"
 require "httpclient"
 
 module BGS
-  # This error is raised when the BGS SOAP API returns a ShareException
-  # fault back to us. We special-case the handling to raise this custom
-  # type down in `request`, where we will kick this up if we're accessing
-  # something that's above our sensitivity level.
-  class ShareError < StandardError
-    def initialize(message)
-      @message = message
-      super
-    end
-  end
-
-  class PublicError < StandardError
-    attr_accessor :public_message
-
-    def initialize(message)
-      @public_message = message
-      super
-    end
-  end
-
   # This class is a base-class from which most Web Services will inherit.
   # This contains the basics of how to talk with the BGS SOAP API, in
   # particular, the VA's custom SOAP headers for auditing. As a bonus, it's
@@ -160,7 +140,10 @@ module BGS
     end
 
     def handle_request_error(error)
-      raise BGS::ShareError, error.to_hash[:fault][:detail][:share_exception][:message]
+      message = error.to_hash[:fault][:detail][:share_exception][:message]
+      code = error.http.code
+
+      raise BGS::ShareError.new(message, code)
     # If any of the elements in this path are undefined, we will raise a NoMethodError.
     # Default to sending the original Savon::SOAPFault (or BGS::PublicError) in this case.
     rescue NoMethodError
