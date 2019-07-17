@@ -97,7 +97,7 @@ module BGS
     def initialize(message, code = nil)
       @message = message.encode("UTF-8", invalid: :replace, undef: :replace, replace: "")
       @code = code
-      super(message)
+      super(@message)
     end
 
     def transient?
