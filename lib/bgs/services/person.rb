@@ -36,5 +36,10 @@ module BGS
       response = request(:find_relationships_by_ptcpnt_id_relationship_type, "ptcpntId": participant_id, "type": type)
       response.body[:find_relationships_by_ptcpnt_id_relationship_type_response][:person_dto]
     end
+
+    def find_employee_by_participant_id(participant_id)
+      response = request(:find_employee_by_ptcpnt_id, "ptcpntId": participant_id)
+      response.body[:find_employee_by_ptcpnt_id_response][:employee_dto]
+    end
   end
 end
