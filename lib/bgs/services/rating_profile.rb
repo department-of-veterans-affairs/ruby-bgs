@@ -22,5 +22,17 @@ module BGS
       # Purposely avoiding much data processing here to do that in the application layer
       response.body[:read_rating_profile_response][:rba_profile]
     end
+
+    # Returns rating profiles within the date range with rating issues for decisions that were at issue
+    # response includes backfilled ratings
+    def find_in_date_range(participant_id:, start_date:, end_date:)
+      response = request(
+        :get_all_decns_at_issue_for_date_range,
+        "veteranID": participant_id,
+        "startDate": start_date,
+        "endDate": end_date
+      )
+      response.body
+    end
   end
 end
