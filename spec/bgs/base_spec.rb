@@ -79,7 +79,7 @@ describe BGS::Base do
         expect(error.class).to eq BGS::ShareError
         expect(error.message).to eq message
         expect(error.code).to eq 500
-        expect(error).to be_transient
+        expect(error).to be_ignorable
       end
      end
   end
@@ -109,7 +109,7 @@ describe BGS::Base do
         expect(error.class).to eq BGS::ShareError
         expect(error.message).to eq message
         expect(error.code).to eq 500
-        expect(error).to_not be_transient
+        expect(error).to_not be_ignorable
       end
      end
   end
