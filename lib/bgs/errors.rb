@@ -100,7 +100,7 @@ module BGS
       super(@message)
     end
 
-    def transient?
+    def ignorable?
       TRANSIENT_ERRORS.any? { |transient_error| message.include?(transient_error) }
     end
   end
