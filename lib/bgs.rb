@@ -5,4 +5,5 @@
 # worldwide through the CC0 1.0 Universal public domain dedication.
 
 require "bgs/base"
+require "bgs/errors"
 require "bgs/services"
