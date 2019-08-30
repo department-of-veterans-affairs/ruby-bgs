@@ -28,6 +28,7 @@ module BGS
       # LocalForward [local port number] beplinktest.vba.va.gov:80
     # and when initializing the client, set the jumpbox_url = 'http://127.0.0.1:[local port number]'
 
+    VDC_SERVICES = ['ManageRepresentativeWebService']
     def initialize(env:, forward_proxy_url: nil, jumpbox_url: nil, application:,
                    client_ip:, client_station_id:, client_username:,
                    ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil,
@@ -74,7 +75,7 @@ module BGS
     end
 
     def bean_name
-      "#{@service_name}Bean"
+      VDC_SERVICES.include?(@service_name) ? 'VDC' : "#{@service_name}Bean"
     end
 
     # Return the VA SOAP audit header. Given the instance variables sitting

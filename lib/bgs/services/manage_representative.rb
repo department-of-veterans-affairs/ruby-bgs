@@ -27,7 +27,7 @@ module BGS
           "vsoPOACode": poa_code
         }
       )
-      response.body[:update_poa_relationship_response][:poa_relationship_return_VO]
+      response.body[:update_poa_relationship_response][:poa_relationship_return_vo]
     end
   end
 end
