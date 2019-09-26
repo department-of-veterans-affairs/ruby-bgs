@@ -105,6 +105,12 @@ module BGS
     end
   end
 
+  class TransientError < ShareError
+    def ignorable?
+      true
+    end
+  end
+
   class PublicError < StandardError
     attr_accessor :public_message
 
