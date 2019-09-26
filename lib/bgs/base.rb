@@ -134,7 +134,11 @@ module BGS
     rescue HTTPClient::ConnectTimeoutError, HTTPClient::ReceiveTimeoutError, Errno::ETIMEDOUT => _err
       # re-try once assuming this was a server-side hiccup
       sleep 1
-      client.call(method, message: message)
+      begin
+        client.call(method, message: message)
+      rescue HTTPClient::ConnectTimeoutError, HTTPClient::ReceiveTimeoutError, Errno::ETIMEDOUT => transient_error
+        raise BGS::TransientError.new(transient_error.to_s, 500)
+      end
     rescue Savon::SOAPFault => error
       handle_request_error(error)
     end

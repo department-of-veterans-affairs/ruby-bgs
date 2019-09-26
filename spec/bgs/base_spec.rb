@@ -28,7 +28,7 @@ describe BGS::Base do
     it "re-tries one time" do
       allow_any_instance_of(Savon::Client).to receive(:call).and_raise(timeout_error)
       expect(bgs_base).to receive(:client).twice.and_call_original
-      expect { bgs_base.test_request(:method) }.to raise_error(Errno::ETIMEDOUT)
+      expect { bgs_base.test_request(:method) }.to raise_error(BGS::TransientError)
     end
   end
 
