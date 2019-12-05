@@ -103,6 +103,16 @@ module BGS
     def ignorable?
       TRANSIENT_ERRORS.any? { |transient_error| message.include?(transient_error) }
     end
+
+    def self.error_type(message, code)
+      new_error = nil
+      KNOWN_ERRORS.each do |msg_str, error_class|
+        next if (message =~ /#{msg_str}/).nil?
+        new_error = error_class.new(message, code)
+        break
+      end
+      new_error ||= new(message, code)
+    end
   end
 
   class TransientError < ShareError
@@ -110,7 +120,6 @@ module BGS
       true
     end
   end
-
   class PublicError < StandardError
     attr_accessor :public_message
 
@@ -119,4 +128,10 @@ module BGS
       super
     end
   end
+
+  class PowerOfAttorneyFolderDenied < ShareError;  end
+
+  KNOWN_ERRORS = {
+    "Power of Attorney of Folder is none" => BGS::PowerOfAttorneyFolderDenied
+  }.freeze
 end
