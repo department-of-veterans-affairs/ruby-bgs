@@ -104,14 +104,16 @@ module BGS
       TRANSIENT_ERRORS.any? { |transient_error| message.include?(transient_error) }
     end
 
-    def self.error_type(message, code)
-      new_error = nil
-      KNOWN_ERRORS.each do |msg_str, error_class|
-        next if (message =~ /#{msg_str}/).nil?
-        new_error = error_class.new(message, code)
-        break
+    class << self
+      def new_from_message(message, code)
+        new_error = nil
+        KNOWN_ERRORS.each do |msg_str, error_class|
+          next if (message =~ /#{msg_str}/).nil?
+          new_error = error_class.new(message, code)
+          break
+        end
+        new_error ||= new(message, code)
       end
-      new_error ||= new(message, code)
     end
   end
 

@@ -1,5 +1,21 @@
 require "bgs"
 
+def default_soap_body(message)
+  %(<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+       <soap:Fault>
+          <faultcode>soap:Server</faultcode>
+          <faultstring>Fault occurred while processing.</faultstring>
+          <Detail>
+             <ShareException>
+               <Message>#{message}</Message>
+             </ShareException>
+          </Detail>
+       </soap:Fault>
+    </soap:Body>
+ </soap:Envelope>)
+end
+
 # rubocop:disable Metrics/BlockLength
 describe BGS::Base do
   let(:file_number) { "123456789" }
@@ -130,23 +146,6 @@ describe BGS::Base do
     end
   end
 end
-
-def default_soap_body(message)
-  %(<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap:Body>
-       <soap:Fault>
-          <faultcode>soap:Server</faultcode>
-          <faultstring>Fault occurred while processing.</faultstring>
-          <Detail>
-             <ShareException>
-               <Message>#{message}</Message>
-             </ShareException>
-          </Detail>
-       </soap:Fault>
-    </soap:Body>
- </soap:Envelope>)
-end
-
 # rubocop:enable Metrics/BlockLength
 
 # Helper class to allow us to test BGS::Base's private request() method.

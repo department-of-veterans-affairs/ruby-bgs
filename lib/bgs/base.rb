@@ -7,7 +7,6 @@
 require "savon"
 require "nokogiri"
 require "httpclient"
-require "pry"
 
 module BGS
   # This class is a base-class from which most Web Services will inherit.
@@ -148,7 +147,7 @@ module BGS
       message = error.to_hash[:fault][:detail][:share_exception][:message]
       code = error.http.code
 
-      raise BGS::ShareError.error_type(message, code)
+      raise BGS::ShareError.new_from_message(message, code)
     # If any of the elements in this path are undefined, we will raise a NoMethodError.
     # Default to sending the original Savon::SOAPFault (or BGS::PublicError) in this case.
     rescue NoMethodError
