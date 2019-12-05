@@ -85,7 +85,7 @@ describe BGS::Base do
       end
      end
   end
-  
+
   context "when Savon::SoapFault with a non-transient ShareException message" do
     let(:message) { "not transient" }
     let(:response_body) { default_soap_body(message) }
