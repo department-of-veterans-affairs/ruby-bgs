@@ -92,6 +92,10 @@ module BGS
       "System error with BGS"
     ].freeze
 
+    KNOWN_ERRORS = {
+      "Power of Attorney of Folder is none" => "BGS::PowerOfAttorneyFolderDenied"
+    }.freeze
+
     attr_reader :message, :code
 
     def initialize(message, code = nil)
@@ -107,8 +111,9 @@ module BGS
     class << self
       def new_from_message(message, code)
         new_error = nil
-        KNOWN_ERRORS.each do |msg_str, error_class|
+        KNOWN_ERRORS.each do |msg_str, error_class_str|
           next if (message =~ /#{msg_str}/).nil?
+          error_class = Kernel.const_get(error_class_str)
           new_error = error_class.new(message, code)
           break
         end
@@ -132,8 +137,4 @@ module BGS
   end
 
   class PowerOfAttorneyFolderDenied < ShareError;  end
-
-  KNOWN_ERRORS = {
-    "Power of Attorney of Folder is none" => BGS::PowerOfAttorneyFolderDenied
-  }.freeze
 end
