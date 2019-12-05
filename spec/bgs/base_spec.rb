@@ -1,5 +1,21 @@
 require "bgs"
 
+def default_soap_body(message)
+  %(<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+       <soap:Fault>
+          <faultcode>soap:Server</faultcode>
+          <faultstring>Fault occurred while processing.</faultstring>
+          <Detail>
+             <ShareException>
+               <Message>#{message}</Message>
+             </ShareException>
+          </Detail>
+       </soap:Fault>
+    </soap:Body>
+ </soap:Envelope>)
+end
+
 # rubocop:disable Metrics/BlockLength
 describe BGS::Base do
   let(:file_number) { "123456789" }
@@ -56,21 +72,7 @@ describe BGS::Base do
 
   context "when Savon::SoapFault with a transient ShareException message" do
     let(:message) { "Connection reset by peer" }
-    let(:response_body) do
-      %(<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-      <soap:Fault>
-         <faultcode>soap:Server</faultcode>
-         <faultstring>Fault occurred while processing.</faultstring>
-         <Detail>
-            <ShareException>
-              <Message>#{message}</Message>
-            </ShareException>
-         </Detail>
-      </soap:Fault>
-   </soap:Body>
-</soap:Envelope>)
-    end
+    let(:response_body) { default_soap_body(message) }
 
     it "raises a transient BGS::ShareError" do
       allow_any_instance_of(Savon::Client).to receive(:call).and_raise(soap_fault)
@@ -86,21 +88,7 @@ describe BGS::Base do
 
   context "when Savon::SoapFault with a non-transient ShareException message" do
     let(:message) { "not transient" }
-    let(:response_body) do
-      %(<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-      <soap:Fault>
-         <faultcode>soap:Server</faultcode>
-         <faultstring>Fault occurred while processing.</faultstring>
-         <Detail>
-            <ShareException>
-              <Message>#{message}</Message>
-            </ShareException>
-         </Detail>
-      </soap:Fault>
-   </soap:Body>
-</soap:Envelope>)
-    end
+    let(:response_body) { default_soap_body(message) }
 
     it "raises a non-transient BGS::ShareError" do
       allow_any_instance_of(Savon::Client).to receive(:call).and_raise(soap_fault)
@@ -111,7 +99,7 @@ describe BGS::Base do
         expect(error.code).to eq 500
         expect(error).to_not be_ignorable
       end
-     end
+    end
   end
 
   context "When BGS::ClaimantWebService.find_flashes() raises a logon not found error" do
@@ -138,6 +126,22 @@ describe BGS::Base do
         expect(error).to be_a(BGS::PublicError)
         expect(error).to respond_to(:public_message)
         expect(error.public_message).to eq(error_string)
+      end
+    end
+  end
+
+  context "when Savon::SoapFault with a known error" do
+    let(:message) { "Power of Attorney of Folder is none. Access to this record is denied." }
+    let(:response_body) { default_soap_body(message) }
+
+    it "raises a BGS::PowerOfAttorneyFolderDenied error" do
+      allow_any_instance_of(Savon::Client).to receive(:call).and_raise(soap_fault)
+
+      expect { bgs_base.test_request(:method) }.to raise_error do |error|
+        expect(error.class).to eq BGS::PowerOfAttorneyFolderDenied
+        expect(error.message).to eq message
+        expect(error.code).to eq 500
+        expect(error).to_not be_ignorable
       end
     end
   end

@@ -92,6 +92,10 @@ module BGS
       "System error with BGS"
     ].freeze
 
+    KNOWN_ERRORS = {
+      "Power of Attorney of Folder is none" => "BGS::PowerOfAttorneyFolderDenied"
+    }.freeze
+
     attr_reader :message, :code
 
     def initialize(message, code = nil)
@@ -103,6 +107,19 @@ module BGS
     def ignorable?
       TRANSIENT_ERRORS.any? { |transient_error| message.include?(transient_error) }
     end
+
+    class << self
+      def new_from_message(message, code)
+        new_error = nil
+        KNOWN_ERRORS.each do |msg_str, error_class_str|
+          next if (message =~ /#{msg_str}/).nil?
+          error_class = Kernel.const_get(error_class_str)
+          new_error = error_class.new(message, code)
+          break
+        end
+        new_error ||= new(message, code)
+      end
+    end
   end
 
   class TransientError < ShareError
@@ -110,7 +127,6 @@ module BGS
       true
     end
   end
-
   class PublicError < StandardError
     attr_accessor :public_message
 
@@ -119,4 +135,6 @@ module BGS
       super
     end
   end
+
+  class PowerOfAttorneyFolderDenied < ShareError;  end
 end
