@@ -93,7 +93,9 @@ module BGS
     ].freeze
 
     KNOWN_ERRORS = {
-      "Power of Attorney of Folder is none" => "BGS::PowerOfAttorneyFolderDenied"
+      "BGS::PowerOfAttorneyFolderDenied" => /Power of Attorney of Folder is none/,
+      # https://github.com/department-of-veterans-affairs/caseflow/issues/12166
+      "BGS::NoRecordsReturned" => /No records returned/,
     }.freeze
 
     attr_reader :message, :code
@@ -111,8 +113,8 @@ module BGS
     class << self
       def new_from_message(message, code)
         new_error = nil
-        KNOWN_ERRORS.each do |msg_str, error_class_str|
-          next if (message =~ /#{msg_str}/).nil?
+        KNOWN_ERRORS.each do |error_class_str, msg_regex|
+          next if (message =~ msg_regex).nil?
           error_class = Kernel.const_get(error_class_str)
           new_error = error_class.new(message, code)
           break
@@ -136,5 +138,7 @@ module BGS
     end
   end
 
-  class PowerOfAttorneyFolderDenied < ShareError;  end
+  class PowerOfAttorneyFolderDenied < ShareError; end
+
+  class NoRecordsReturned < ShareError; end
 end
