@@ -144,7 +144,8 @@ module BGS
     end
 
     def handle_request_error(error)
-      message = error.to_hash[:fault][:detail][:share_exception][:message]
+      err_tree = error.to_hash
+      message = err_tree.dig(:fault, :detail, :share_exception, :message) || err_tree.dig(:fault, :faultstring)
       code = error.http.code
 
       raise BGS::ShareError.new_from_message(message, code)
