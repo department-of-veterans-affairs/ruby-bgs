@@ -148,18 +148,22 @@ module BGS
       message = err_tree.dig(:fault, :detail, :share_exception, :message) || err_tree.dig(:fault, :faultstring)
       code = error.http.code
 
+      # preserve SOAPFault if the error looks like a non-share (permissions) error.
+      if message.blank? or message =~ /Fault/
+        raise error
+      end
+
+      # special case
+      raise_public_error(message) if message =~ /(Logon ID .* Not Found)/
+
       raise BGS::ShareError.new_from_message(message, code)
-    # If any of the elements in this path are undefined, we will raise a NoMethodError.
-    # Default to sending the original Savon::SOAPFault (or BGS::PublicError) in this case.
-    rescue NoMethodError
-      # Expect error string to look something like the following:
-      # Savon::SOAPFault: (S:Client) ID: {{UUID}}: Logon ID {{CSS_ID}} Not Found
-      # Only extract the final clause of that error message for the public error.
-      #
-      # rubocop:disable Metrics/LineLength
-      raise(BGS::PublicError, "#{Regexp.last_match(1)} in the Benefits Gateway Service (BGS). Contact your ISO if you need assistance gaining access to BGS.") if error.to_s =~ /(Logon ID .* Not Found)/
-      # rubocop:enable Metrics/LineLength
-      raise error
+    end
+
+    def raise_public_error(logon_id)
+      raise(
+        BGS::PublicError,
+        "#{logon_id} in the Benefits Gateway Service (BGS). Contact your ISO if you need assistance gaining access to BGS."
+      )
     end
   end
 end
