@@ -154,7 +154,7 @@ module BGS
       end
 
       # special case
-      raise_public_error(message) if message =~ /(Logon ID .* Not Found)/
+      raise_public_error(Regexp.last_match(1)) if message =~ /(Logon ID .* Not Found)/
 
       raise BGS::ShareError.new_from_message(message, code)
     end
