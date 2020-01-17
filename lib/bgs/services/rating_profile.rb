@@ -32,7 +32,7 @@ module BGS
         "startDate": start_date,
         "endDate": end_date
       )
-      result = response.body[:get_all_decns_at_issue_for_date_range_response][:decns_at_issue_for_date_range]
+      response.body[:get_all_decns_at_issue_for_date_range_response][:decns_at_issue_for_date_range]
     end
   end
 end
