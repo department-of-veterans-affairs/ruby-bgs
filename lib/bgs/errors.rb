@@ -96,6 +96,7 @@ module BGS
       "BGS::PowerOfAttorneyFolderDenied" => /Power of Attorney of Folder is none/,
       # https://github.com/department-of-veterans-affairs/caseflow/issues/12166
       "BGS::NoRecordsReturned" => /No records returned/,
+      "BGS::NoRatingsExistForVeteran" => /No Ratings exist for this Veteran/,
     }.freeze
 
     attr_reader :message, :code
@@ -141,4 +142,6 @@ module BGS
   class PowerOfAttorneyFolderDenied < ShareError; end
 
   class NoRecordsReturned < ShareError; end
+
+  class NoRatingsExistForVeteran < ShareError; end
 end
