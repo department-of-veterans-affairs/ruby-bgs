@@ -124,10 +124,11 @@ module BGS
         "xmlns:v1" => "http://types.ws.css.vba.va.gov/services/v1",
       }
 
-      @client ||= Savon.client(
-        wsdl: wsdl, soap_header: header, log: @log,
+      savon_client_params = {
+        wsdl: wsdl,
+        soap_header: header,
+        log: @log,
         namespaces: namespaces,
-        namespace_identifier: namespace_identifier,
         ssl_cert_key_file: @ssl_cert_key_file,
         headers: headers,
         ssl_cert_file: @ssl_cert_file,
@@ -135,7 +136,10 @@ module BGS
         open_timeout: 10, # in seconds
         read_timeout: 600, # in seconds
         convert_request_keys_to: :none
-      )
+      }
+      savon_client_params[:namespace_identifier] = namespace_identifier if namespace_identifier
+
+      @client ||= Savon.client(savon_client_params)
     end
 
     # Proxy to call a method on our web service.
