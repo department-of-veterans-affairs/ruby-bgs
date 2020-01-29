@@ -116,8 +116,13 @@ module BGS
       headers = {}
       headers["Host"] = domain if @forward_proxy_url
 
+      namespaces = {
+        "xmlns:v1" => "http://types.ws.css.vba.va.gov/services/v1",
+      }
+
       @client ||= Savon.client(
         wsdl: wsdl, soap_header: header, log: @log,
+        namespaces: namespaces,
         ssl_cert_key_file: @ssl_cert_key_file,
         headers: headers,
         ssl_cert_file: @ssl_cert_file,

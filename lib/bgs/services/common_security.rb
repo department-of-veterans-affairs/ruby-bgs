@@ -9,7 +9,7 @@ module BGS
     end
 
     def get_css_user_stations(username)
-      response = request(:get_css_user_stations_by_application_username, username)
+      response = request(:get_css_user_stations_by_application_username, namespace: :v1, username: username)
     end
 
     def get_security_profile(username:, station_id:, application:)
