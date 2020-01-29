@@ -8,6 +8,10 @@ module BGS
       "css-webservices"
     end
 
+    def namespace_identifier
+      "v1"
+    end
+
     def get_css_user_stations(username)
       response = request(:get_css_user_stations_by_application_username, namespace: :v1, username: username)
     end

@@ -52,6 +52,10 @@ module BGS
       name + "s"
     end
 
+    def namespace_identifier
+      nil # default comes from wsdl
+    end
+
     private
 
     def https?
@@ -123,6 +127,7 @@ module BGS
       @client ||= Savon.client(
         wsdl: wsdl, soap_header: header, log: @log,
         namespaces: namespaces,
+        namespace_identifier: namespace_identifier,
         ssl_cert_key_file: @ssl_cert_key_file,
         headers: headers,
         ssl_cert_file: @ssl_cert_file,
