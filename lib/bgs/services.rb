@@ -17,6 +17,7 @@ require "bgs/services/address"
 require "bgs/services/awards"
 require "bgs/services/benefit"
 require "bgs/services/claimant"
+require "bgs/services/common_security"
 require "bgs/services/document"
 require "bgs/services/org"
 require "bgs/services/person"
@@ -31,6 +32,23 @@ require "bgs/services/security"
 
 module BGS
   class Services
+    class << self
+      def all
+        ObjectSpace.each_object(Class).select { |klass| klass < BGS::Base }
+      end
+
+      def register_services
+        all.each do |service|
+          define_method(service.service_name) do
+            service.new @config
+          end
+        end
+      end
+    end
+
+    # call register on init
+    BGS::Services.register_services
+
     def initialize(env:, application:,
                    client_ip:, client_station_id:, client_username:,
                    forward_proxy_url: nil, jumpbox_url: nil,
@@ -46,16 +64,6 @@ module BGS
                   forward_proxy_url: forward_proxy_url,
                   jumpbox_url: jumpbox_url,
                   log: log }
-    end
-
-    def self.all
-      ObjectSpace.each_object(Class).select { |klass| klass < BGS::Base }
-    end
-
-    BGS::Services.all.each do |service|
-      define_method(service.service_name) do
-        service.new @config
-      end
     end
 
     # High level utility function to determine if a record can be accessed
