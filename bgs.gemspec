@@ -13,6 +13,9 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "nokogiri", "~> 1.10.4"
   gem.add_runtime_dependency "savon", "~> 2.12"
   gem.add_runtime_dependency "httpclient"
+  gem.add_development_dependency "pry"
+  gem.add_development_dependency "pry-nav"
+  gem.add_development_dependency "byebug"
 
   gem.files         = Dir["lib/**/*.rb"]
   gem.require_paths = ["lib"]

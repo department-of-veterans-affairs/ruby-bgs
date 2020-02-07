@@ -1,4 +1,5 @@
 require "bgs"
+require "pry"
 
 def default_soap_body(message)
   %(<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -145,6 +146,22 @@ describe BGS::Base do
       end
     end
   end
+
+  context "explicit endpoint" do
+    before do
+      allow_any_instance_of(Savon::Client).to receive(:call) do |client, soap_method|
+        @endpoint_used = client.wsdl.endpoint
+        true
+      end
+    end
+
+    it "uses the explicit subclass endpoint in requests" do
+      expect(bgs_base.endpoint).to eq "override-the-wsdl"
+      expect(bgs_base.send(:client).wsdl.endpoint).to eq "override-the-wsdl"
+      expect(bgs_base.test_request(:method)).to eq true
+      expect(@endpoint_used).to eq "override-the-wsdl"
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength
 
@@ -153,6 +170,10 @@ module BGS
   class TestBase < BGS::Base
     def test_request(method, message = nil)
       request(method, message)
+    end
+
+    def endpoint
+      "override-the-wsdl"
     end
   end
 end
