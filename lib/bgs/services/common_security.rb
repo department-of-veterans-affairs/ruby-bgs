@@ -8,8 +8,14 @@ module BGS
       "css-webservices"
     end
 
+    # override what's in the wsdl
     def namespace_identifier
       "v1"
+    end
+
+    # override what's in the wsdl
+    def endpoint
+      "#{base_url}/#{bean_name}/#{@service_name}"
     end
 
     def get_css_user_stations(username)

@@ -56,6 +56,10 @@ module BGS
       nil # default comes from wsdl
     end
 
+    def endpoint
+      nil # default comes from wsdl
+    end
+
     private
 
     def https?
@@ -138,6 +142,7 @@ module BGS
         convert_request_keys_to: :none
       }
       savon_client_params[:namespace_identifier] = namespace_identifier if namespace_identifier
+      savon_client_params[:endpoint] = endpoint if endpoint
 
       @client ||= Savon.client(savon_client_params)
     end
