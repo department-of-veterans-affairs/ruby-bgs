@@ -5,7 +5,7 @@
 # worldwide through the CC0 1.0 Universal public domain dedication.
 
 module BGS
-  # Used for finding historical data about ratings
+  #This service is used to update the rating profiles for a Veteran.  
   class RatingManagementService < BGS::Base
     def bean_name
       "RatingManagementService"
@@ -15,6 +15,9 @@ module BGS
       "rating_management"
     end
 
+    # This service is used to get the RBA rating data for a Veteran.  The service returns the most current rating
+    # profile and all associated decisions for this rating, by Participant Veteran ID.  The isBackfill input parameter
+    # is used only when the rating data is being pulled without an associated claim to be worked.
     def get_rating(participant_id)
       response = request(:get_rating, "veteran_id": participant_id)
       response.body[:get_rating_response]
