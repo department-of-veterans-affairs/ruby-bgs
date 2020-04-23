@@ -16,8 +16,11 @@ module BGS
     end
 
     # This service is used to get the RBA rating data for a Veteran.  The service returns the most current rating
-    # profile and all associated decisions for this rating, by Participant Veteran ID.  The isBackfill input parameter
-    # is used only when the rating data is being pulled without an associated claim to be worked.
+    # profile and all associated decisions for this rating, by Participant Veteran ID.
+
+    # The isBackfill input parameter is used when the rating is being pulled without an associated claim to be worked,
+    # usually for correction or filling of old/missing data.
+
     def get_rating(participant_id, is_backfill=false)
       response = request(:get_rating, "veteran_id": participant_id, "is_backfill": is_backfill)
       response.body[:get_rating_response]
