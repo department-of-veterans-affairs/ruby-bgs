@@ -5,36 +5,20 @@
 # worldwide through the CC0 1.0 Universal public domain dedication.
 
 module BGS
-  # Used for finding historical data about ratings
-  class RatingComparisonEJBService < BGS::Base
+  # This service is used to find the rating decision.
+  class RatingWebService < BGS::Base
     def bean_name
-      "RatingComparisonEJB"
+      "RatingService"
     end
 
     def self.service_name
-      "rating"
+      "ratings"
     end
 
-    # Returns a wide variety of information about the current profile and ratings in
-    # the specified date range.
-    def find_by_participant_id_and_date_range(participant_id, start_date, end_date)
-      response = request(
-        :compare_by_date_range,
-        "RatingDateRange": {
-          "ptcpntId": participant_id,
-          "startDate": start_date,
-          "endDate": end_date,
-          # This flag allows the service to return ratings that are not locked
-          # if the most current rating is locked
-          "allowLockedRatings": "Y",
-          # This field isn't used and should be set to the start_date
-          # according to the BGS team.
-          "claimDate": start_date
-        }
-      )
-
-      # Purposely avoiding much data processing here to do that in the application layer
-      response.body[:compare_by_date_range_response][:return]
+    # This service is used to find the Rating Data by Veteran Participant ID.
+    def find_rating_data_by_participant_id(participant_id)
+      response = request(:find_rating_data_by_ptcpnt_id, "ptcnpt_id": participant_id)
+      response.body[:find_rating_data_by_ptcpnt_id_response]
     end
   end
 end
