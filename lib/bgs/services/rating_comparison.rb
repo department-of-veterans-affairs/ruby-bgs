@@ -12,7 +12,7 @@ module BGS
     end
 
     def self.service_name
-      "rating"
+      "rating_comparison"
     end
 
     # Returns a wide variety of information about the current profile and ratings in

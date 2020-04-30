@@ -6,19 +6,20 @@
 
 module BGS
   # This service is used to find the rating decision.
-  class RatingWebService < BGS::Base
+  class RatingService < BGS::Base
     def bean_name
-      "RatingService"
+      "RatingServiceBean"
     end
 
     def self.service_name
-      "ratings"
+      "rating"
     end
 
     # This service is used to find the Rating Data by Veteran Participant ID.
     def find_rating_data_by_participant_id(participant_id)
-      response = request(:find_rating_data_by_ptcpnt_id, "ptcnpt_id": participant_id)
+      response = request(:find_rating_data_by_ptcpnt_id, ptcpntId: participant_id)
       response.body[:find_rating_data_by_ptcpnt_id_response]
     end
   end
 end
+
