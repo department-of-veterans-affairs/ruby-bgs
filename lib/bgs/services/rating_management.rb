@@ -22,7 +22,7 @@ module BGS
     # usually for correction or filling of old/missing data.
 
     def get_rating(participant_id, is_backfill=false)
-      response = request(:get_rating, "veteran_id": participant_id, "is_backfill": is_backfill)
+      response = request(:get_rating, veteranId: participant_id, isBackfill: is_backfill)
       response.body[:get_rating_response]
     end
   end
