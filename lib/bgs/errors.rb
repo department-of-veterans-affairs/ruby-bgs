@@ -84,6 +84,9 @@ module BGS
       # https://sentry.ds.va.gov/department-of-veterans-affairs/caseflow/issues/3404/
       "TUX-20306 - An unexpected error was encountered",
 
+      # https://sentry.ds.va.gov/department-of-veterans-affairs/caseflow/issues/8667/events/d060fbbf917a454585fc4eda555f3f75/
+      "Page Unavailable",
+
       # Full message may be something like
       # "An error occurred while establishing the claim: Unable to establish claim: TUX-20308 -
       # An unexpected error was encountered. Please contact the System Administrator. Error is: TUX-20308"
