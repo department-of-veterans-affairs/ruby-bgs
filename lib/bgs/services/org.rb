@@ -43,6 +43,12 @@ module BGS
       response.body[:find_po_as_by_ptcpnt_ids_response][:return]
     end
 
+    # find POA by benefit claim id
+    def find_poas_by_claim_ids(claim_ids)
+      response = request(:find_po_as_by_bnft_claim_ids, "claimIds": claim_ids)
+      response.body
+    end
+
     # find claim-level limited POA
     def find_limited_poas_by_bnft_claim_ids(claim_id)
       response = request(:find_limited_poas_by_bnft_claim_ids, "bnftClaimId": claim_id)

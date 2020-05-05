@@ -25,6 +25,20 @@ module BGS
       response.body[:find_poa_by_ptcpnt_id_response][:return]
     end
 
+    # findPOA (shrinqf)
+    #   finds the Power of Attory related to a file number
+    def find_poa_by_file_number(file_number)
+      response = request(:find_poa, "fileNumber": file_number)
+      response.body[:find_poa_response][:return]
+    end
+
+    # findDependents (shrinq3)
+    #    finds the dependents for a file number
+    def find_dependents(file_number)
+      response = request(:find_dependents, "fileNumber": file_number)
+      response.body[:find_dependents_response][:return]
+    end
+
     # findGeneralInformationByPtcpntIds (shrinqm)
     #   finds the General Information for given ptcpntIds, flashes, diaries,
     #   and evrs. Used when a list exist, and you want information on a single
