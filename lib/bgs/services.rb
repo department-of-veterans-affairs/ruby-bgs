@@ -16,6 +16,7 @@
 require "bgs/services/address"
 require "bgs/services/awards"
 require "bgs/services/benefit"
+require "bgs/services/benefit_claim"
 require "bgs/services/claimant"
 require "bgs/services/common_security"
 require "bgs/services/document"
