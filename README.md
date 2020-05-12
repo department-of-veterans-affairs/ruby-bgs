@@ -31,12 +31,11 @@ You'll need Ruby 2.5.1 if you don't have it.
 
 Install dependencies
 
-> $ gem install bundler --no-rdoc --no-ri
-> $ bundle install
+> % make deps
 
 Run tests
 
-> $ bundle exec rake spec
+> % make test
 
 
 License
