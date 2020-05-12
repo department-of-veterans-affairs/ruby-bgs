@@ -96,7 +96,7 @@ module BGS
     ].freeze
 
     KNOWN_ERRORS = {
-      "BGS::PowerOfAttorneyFolderDenied" => /Power of Attorney of Folder is none/,
+      "BGS::PowerOfAttorneyFolderDenied" => /Power of Attorney of Folder is/,
       # https://github.com/department-of-veterans-affairs/caseflow/issues/12166
       "BGS::NoRecordsReturned" => /No records returned/,
       "BGS::NoRatingsExistForVeteran" => /No Ratings exist for this Veteran/,
