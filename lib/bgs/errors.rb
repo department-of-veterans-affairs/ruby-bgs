@@ -100,6 +100,7 @@ module BGS
       # https://github.com/department-of-veterans-affairs/caseflow/issues/12166
       "BGS::NoRecordsReturned" => /No records returned/,
       "BGS::NoRatingsExistForVeteran" => /No Ratings exist for this Veteran/,
+      "BGS::AccountLocked" => /Your account is locked/
     }.freeze
 
     attr_reader :message, :code
@@ -147,4 +148,6 @@ module BGS
   class NoRecordsReturned < ShareError; end
 
   class NoRatingsExistForVeteran < ShareError; end
+
+  class AccountLocked < ShareError; end
 end
