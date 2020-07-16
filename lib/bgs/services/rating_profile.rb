@@ -35,10 +35,11 @@ module BGS
       response.body[:get_all_decns_at_issue_for_date_range_response][:decns_at_issue_for_date_range]
     end
     
-    # Returns current rating profile by file number
-    def get_current_rating_profile(file_number, include_issues=false)
-      response = request(:read_current_rating_profile, "veteranId": file_number, "includeIssues": include_issues)
-      response.body[:read_current_rating_profile_response][:rba_profile]
+    # Returns current rating profile by participant_id
+    def find_current_rating_profile_by_ptcpnt_id(participant_id, include_issues=true)
+      response = request(:read_current_rating_profile_by_ptcpnt_id, "veteranId": participant_id, "includeIssues": include_issues)
+      response.body[:read_current_rating_profile_by_ptcpnt_id_response][:rba_profile]
     end
   end
 end
+
