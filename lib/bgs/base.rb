@@ -164,7 +164,7 @@ module BGS
 
     def handle_request_error(error)
       err_tree = error.to_hash
-      message = err_tree.dig(:fault, :detail, :share_exception, :message) || err_tree.dig(:fault, :faultstring)
+      message = err_tree.dig(:fault, :detail, :css_repo_generic_fault, :message) || err_tree.dig(:fault, :detail, :share_exception, :message) || err_tree.dig(:fault, :faultstring)
       code = error.http.code
 
       # preserve SOAPFault if the error looks like a non-share (permissions) error.
