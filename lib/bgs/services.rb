@@ -30,6 +30,7 @@ require "bgs/services/standard_data"
 require "bgs/services/veteran"
 require "bgs/services/security"
 require "bgs/services/contention"
+require "bgs/services/share_standard_data"
 
 # Now, we're going to declare a class to hide the actual creation of service
 # objects, since having to construct them all really sucks.
