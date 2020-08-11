@@ -8,8 +8,8 @@ module BGS
       "share_standard_data"
     end
 
-    def find_diagnostic_codes(file_number)
-      response = request(:find_diagnostic_codes, "fileNumber": file_number)
+    def find_diagnostic_codes
+      response = request(:find_diagnostic_codes)
       response.body[:find_diagnostic_codes_response]
     end
   end
