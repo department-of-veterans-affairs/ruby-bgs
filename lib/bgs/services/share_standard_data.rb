@@ -12,5 +12,10 @@ module BGS
       response = request(:find_diagnostic_codes)
       response.body[:find_diagnostic_codes_response]
     end
+
+    def find_pay_grades
+      response = request(:find_pay_grades)
+      response.body[:find_pay_grades_response]
+    end
   end
 end
