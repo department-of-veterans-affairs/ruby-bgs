@@ -15,7 +15,7 @@ module BGS
 
     def find_pay_grades
       response = request(:find_pay_grades)
-      response.body[:find_pay_grades_response]
+      response.body[:find_pay_grades_response][:return][:types]
     end
   end
 end
