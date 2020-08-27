@@ -38,6 +38,8 @@ module BGS
     def cancel_end_product(file_number:, end_product_code:, modifier:, reason: "1", payee_code: "00", benefit_type: "1")
       response = request(:cancel_benefit_claim, "cancelBenefitClaimInput": {
                            "fileNumber": file_number,
+                           "payeeCode": payee_code, 
+                           "benefitClaimType": benefit_type,
                            "endProductCode": end_product_code,
                            "incremental": modifier,
                            "pcanReasonCode": reason
