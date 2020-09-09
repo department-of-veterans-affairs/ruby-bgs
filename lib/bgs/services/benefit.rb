@@ -47,5 +47,19 @@ module BGS
 
       response.body || []
     end
+
+    def update_benefit_claim(file_number, payee_code, claim_date, benefit_type, modifier, code)
+      response = request(:update_benefit_claim, "BenefitClaimUpdateInput": {
+              "fileNumber": file_number,
+              "payeeCode": payee_code,
+              "dateofClaim": claim_date,
+              "benefitClaimType": benefit_type,
+              "oldEndProductCode": modifier,
+              "newEndProductLabel": code,
+              "oldDateOfClaim": claim_date
+        })
+
+      response.body || []
+    end
   end
 end
