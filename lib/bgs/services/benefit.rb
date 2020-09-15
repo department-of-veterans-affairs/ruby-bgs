@@ -47,23 +47,23 @@ module BGS
 
       response.body || []
     end
-
+    
+    # We will harcode folderWithClaim and sectionUnitNo in Caseflow for now until BGS provides us with exact values.
     def update_benefit_claim(file_number, payee_code, claim_date, benefit_type, modifier, code, disposition)
       response = request(:update_benefit_claim, "benefitClaimUpdateInput": {
               "fileNumber": file_number,
               "payeeCode": payee_code,
-              "dateofClaim": claim_date,
+              "dateOfClaim": claim_date.strftime("%m/%d/%Y"),
               "benefitClaimType": benefit_type,
               "oldEndProductCode": modifier,
               "newEndProductLabel": code,
-              "oldDateOfClaim": claim_date,
-              "suspenseDate": claim_date,
+              "oldDateOfClaim": claim_date.strftime("%m/%d/%Y"),
               "disposition": disposition,
               "folderWithClaim": "Y",
               "sectionUnitNo": "2111"
         })
 
-      response.body || []
+      response.body[:update_benefit_claim_response][:return] || []
     end
   end
 end
