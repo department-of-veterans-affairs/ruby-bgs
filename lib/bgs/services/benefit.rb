@@ -48,14 +48,14 @@ module BGS
       response.body || []
     end
     
-    # We will harcode folderWithClaim and sectionUnitNo in Caseflow for now until BGS provides us with exact values.
+    # We are using the same values when we establish claims, and that we're told that folderWithClaim and sectionUnitNo are not used 
     # The format of the claim_date is "mm/dd/YYYY",
-    def update_benefit_claim(file_number:, payee_code:, claim_date:, benefit_type:, modifier:, code:, disposition: "M", section: "999", folder: "N")
+    def update_benefit_claim(file_number:, payee_code:, claim_date:, benefit_claim_type:, modifier:, code:, disposition: "M", section: "999", folder: "N")
       response = request(:update_benefit_claim, "benefitClaimUpdateInput": {
               "fileNumber": file_number,
               "payeeCode": payee_code,
               "dateOfClaim": claim_date,
-              "benefitClaimType": benefit_type,
+              "benefitClaimType": benefit_claim_type,
               "oldEndProductCode": modifier,
               "newEndProductLabel": code,
               "oldDateOfClaim": claim_date,
