@@ -58,7 +58,7 @@ module BGS
                    client_ip:, client_station_id:, client_username:,
                    forward_proxy_url: nil, jumpbox_url: nil,
                    ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil,
-                   log: false)
+                   log: false, logger: nil)
 
       @config = { env: env, application: application, client_ip: client_ip,
                   client_station_id: client_station_id,
@@ -68,7 +68,8 @@ module BGS
                   ssl_ca_cert: ssl_ca_cert,
                   forward_proxy_url: forward_proxy_url,
                   jumpbox_url: jumpbox_url,
-                  log: log }
+                  log: log,
+                  logger: logger }
     end
 
     # High level utility function to determine if a record can be accessed
