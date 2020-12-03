@@ -31,12 +31,13 @@ module BGS
     def initialize(env:, forward_proxy_url: nil, jumpbox_url: nil, application:,
                    client_ip:, client_station_id:, client_username:,
                    ssl_cert_file: nil, ssl_cert_key_file: nil, ssl_ca_cert: nil,
-                   log: false)
+                   log: false, logger: nil)
       @application = application
       @client_ip = client_ip
       @client_station_id = client_station_id
       @client_username = client_username
       @log = log
+      @logger = logger
       @env = env
       @forward_proxy_url = forward_proxy_url
       @jumpbox_url = jumpbox_url
@@ -143,6 +144,7 @@ module BGS
       }
       savon_client_params[:namespace_identifier] = namespace_identifier if namespace_identifier
       savon_client_params[:endpoint] = endpoint if endpoint
+      savon_client_params[:logger] = @logger if @logger
 
       @client ||= Savon.client(savon_client_params)
     end
