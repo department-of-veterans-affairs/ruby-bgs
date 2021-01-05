@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = "vacaseflowops@va.gov"
   gem.homepage      = ""
 
-  gem.add_runtime_dependency "nokogiri", "~> 1.10.8"
+  gem.add_runtime_dependency "nokogiri", ">= 1.11.0.rc4"
   gem.add_runtime_dependency "savon", "~> 2.12"
   gem.add_runtime_dependency "httpclient"
   gem.add_development_dependency "bundler-audit"
