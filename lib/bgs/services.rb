@@ -72,6 +72,22 @@ module BGS
                   logger: logger }
     end
 
+    def application
+      config[:application]
+    end
+
+    def client_ip
+      config[:client_ip]
+    end
+
+    def client_station_id
+      config[:client_station_id]
+    end
+
+    def client_username
+      config[:client_username]
+    end
+
     # High level utility function to determine if a record can be accessed
     # in the current configuration. The logic on reading flashes this way
     # was grafted from how VBMS checks to see if the sensitivity level is
@@ -93,5 +109,9 @@ module BGS
     rescue BGS::ShareError
       false
     end
+
+    private
+
+    attr_accessor :config
   end
 end
