@@ -1,6 +1,8 @@
 ruby-bgs
 ========
 
+Small Test Change
+
 `bgs` is a gem that helps developers within the VA connect to a set of
 VA internal webservices, the `BGS` (Benefits Gateway Services).
 
