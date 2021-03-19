@@ -84,7 +84,7 @@ describe BGS::Base do
         expect(error.code).to eq 500
         expect(error).to be_ignorable
       end
-     end
+    end
   end
 
   context "when Savon::SoapFault with a non-transient ShareException message" do
@@ -141,6 +141,37 @@ describe BGS::Base do
       expect { bgs_base.test_request(:method) }.to raise_error do |error|
         expect(error.class).to eq BGS::PowerOfAttorneyFolderDenied
         expect(error.message).to eq message
+        expect(error.code).to eq 500
+        expect(error).to_not be_ignorable
+      end
+    end
+  end
+
+  context "when css user stations error" do
+    let(:response_body) do
+      %(<S:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+  <env:Header/>
+  <S:Body>
+     <ns0:Fault xmlns:ns0="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://www.w3.org/2003/05/soap-envelope">
+        <faultcode>ns0:Server</faultcode>
+        <faultstring>Unable to get user authroization due to a framework fault</faultstring>
+        <detail>
+           <ns0:cssRepoGenericFault xmlns:ns0="http://types.ws.css.vba.va.gov/services/v1">
+              <message>Error getting CSS User from Corporate</message>
+           </ns0:cssRepoGenericFault>
+        </detail>
+     </ns0:Fault>
+  </S:Body>
+</S:Envelope>
+      )
+    end
+
+    it "raises a non-transient BGS::ShareError" do
+      allow_any_instance_of(Savon::Client).to receive(:call).and_raise(soap_fault)
+
+      expect { bgs_base.test_request(:method) }.to raise_error do |error|
+        expect(error.class).to eq BGS::ShareError
+        expect(error.message).to eq "Error getting CSS User from Corporate"
         expect(error.code).to eq 500
         expect(error).to_not be_ignorable
       end
