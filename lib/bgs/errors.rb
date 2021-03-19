@@ -150,4 +150,6 @@ module BGS
   class NoRatingsExistForVeteran < ShareError; end
 
   class AccountLocked < ShareError; end
+
+  class OverloadedError < StandardError; end
 end
