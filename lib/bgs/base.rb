@@ -160,6 +160,14 @@ module BGS
       rescue HTTPClient::ConnectTimeoutError, HTTPClient::ReceiveTimeoutError, Errno::ETIMEDOUT => transient_error
         raise BGS::TransientError.new(transient_error.to_s, 500)
       end
+    # https://www.rubydoc.info/gems/httpclient/2.1.5.2/HTTPClient/BadResponseError suggests this is what's thrown:
+    rescue HTTPClient::BadResponseError => err
+      # https://www.rubydoc.info/gems/savon/Savon/HTTPError suggests this should be available?
+      if err.http.headers['x-envoy-overloaded']
+        raise BGS::OverloadedError.new
+      else
+        raise err
+      end
     rescue Savon::SOAPFault => error
       handle_request_error(error)
     end
