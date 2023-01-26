@@ -10,16 +10,16 @@ Gem::Specification.new do |gem|
   gem.email         = "vacaseflowops@va.gov"
   gem.homepage      = ""
 
-  gem.add_runtime_dependency "nokogiri", ">= 1.11.0.rc4"
-  gem.add_runtime_dependency "savon", "~> 2.12"
   gem.add_runtime_dependency "httpclient"
+  gem.add_runtime_dependency "nokogiri", ">= 1.14"
+  gem.add_runtime_dependency "savon", "~> 2.14"
   gem.add_development_dependency "bundler-audit"
+  gem.add_development_dependency "byebug"
   gem.add_development_dependency "pry"
   gem.add_development_dependency "pry-nav"
   gem.add_development_dependency "rake"
   gem.add_development_dependency "rspec"
-  gem.add_development_dependency "rubocop", "<= 0.79"
-  gem.add_development_dependency "byebug"
+  gem.add_development_dependency "rubocop", "~>  1.4"
 
   gem.files         = Dir["lib/**/*.rb"]
   gem.require_paths = ["lib"]
