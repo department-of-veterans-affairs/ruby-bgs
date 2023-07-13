@@ -20,5 +20,11 @@ module BGS
       response = request(:find_contentions, "claimId": claim_id)
       response.body[:find_contentions_response][:benefit_claim]
     end
+
+    # Find contention by participant_id.
+    def find_contention_by_participant_id(participant_id)
+      response = request(:find_contentions_by_ptcpnt_id, "ptcpntId": participant_id)
+      response.body[:find_contentions_by_ptcpnt_id_response][:benefit_claims]
+    end
   end
 end
