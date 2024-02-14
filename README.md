@@ -5,7 +5,7 @@ ruby-bgs
 VA internal webservices, the `BGS` (Benefits Gateway Services).
 
 
-Example Usage
+Example Usagee
 -------------
 
 ```ruby
